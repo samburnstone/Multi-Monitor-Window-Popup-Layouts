@@ -3,7 +3,6 @@ const path = require('path');
 module.exports = {
   mode: 'development',
   entry: {
-    // Set the single-spa config as the project entry point
     'main': './src/main.js',
   },
   output: {
