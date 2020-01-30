@@ -1,6 +1,7 @@
 {
   "scripts": {
-    "start": "webpack-dev-server --open"
+    "start": "webpack-dev-server --open --port 9000",
+    "build": "webpack --config webpack.config.js -p"
   },
   "dependencies": {
     "react": "^16.12.0",
