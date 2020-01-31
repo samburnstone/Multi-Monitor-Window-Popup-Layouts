@@ -1,6 +1,6 @@
 import microFrontendsConfig from './microfrontends.config';
 
-const createScriptElement = ({ containerElementId, bundleUrl, name }) => {
+const initMicroFrontend = ({ containerElementId, bundleUrl, name }) => {
   const divEl = document.createElement('div');
   divEl.id = containerElementId;
   document.body.appendChild(divEl);
@@ -18,4 +18,4 @@ const loadMicroFrontend = (name, containerElementId) => {
   mountFn(containerElementId);
 };
 
-microFrontendsConfig.forEach(createScriptElement);
+microFrontendsConfig.forEach(initMicroFrontend);
