@@ -1,24 +1,28 @@
 import * as messageHub from './messageHub';
 import microFrontendsConfig from './microfrontends.config';
+import { createNewWindowWithLayout, initMicroFrontend } from './createApplication';
 
-export const initMicroFrontend = ({ containerElementId, bundleUrl, name }, document = window.document) => {
-  const divEl = document.createElement('div');
-  divEl.id = containerElementId;
-  document.body.appendChild(divEl);
-
-  const scriptEl = document.createElement('script');
-  scriptEl.src = bundleUrl;
-  scriptEl.onload = () => loadMicroFrontend(name, containerElementId);
-  document.body.appendChild(scriptEl);
-}
-
-const loadMicroFrontend = (name, containerElementId) => {
-  // For now, the microfrontend will pop functions on the window that
-  // we can use to mount the application
-  const mountFn = window[`mount${name}`];
-  mountFn(containerElementId);
-};
+const popupLayoutStore = [
+  {
+    name: 'StockTrader',
+    x: 200,
+    y: 200,
+    width: 200,
+    height: 200
+  },
+  {
+    name: 'StockTrader',
+    x: 400,
+    y: 200,
+    width: 200,
+    height: 200
+  },
+];
 
 microFrontendsConfig.forEach((config) => initMicroFrontend(config));
+popupLayoutStore.forEach((layout) => {
+  const microConfig = microFrontendsConfig.find(({ name }) => name === layout.name);
+  createNewWindowWithLayout(microConfig, layout);
+})
 
 messageHub.listen();

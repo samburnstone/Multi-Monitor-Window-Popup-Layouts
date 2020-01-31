@@ -1,5 +1,5 @@
 import microFrontendsConfig from './microfrontends.config';
-import { initMicroFrontend } from './main';
+import { createNewWindowWithLayout } from './createApplication';
 
 const handleOpenPopup = payload => {
   const config = microFrontendsConfig.find(({ name }) => name === payload.name);
@@ -7,15 +7,6 @@ const handleOpenPopup = payload => {
   if (!config) {
     throw new Error(`Invalid microfrontend name ${payload.name}`)
   }
-
-  // Use screenX and screenY to position the popup
-  const popupWindow = window.open(
-    './index.html',
-    "",
-    "height=300,width=300,resizable,scrollable,bottom=0,screenX=3500"
-  );
-
-  initMicroFrontend(config, popupWindow.document);
 };
 
 export const listen = () => window.addEventListener(
