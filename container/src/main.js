@@ -1,6 +1,7 @@
 import * as messageHub from './messageHub';
 import microFrontendsConfig from './microfrontends.config';
-import { createNewWindowWithLayout, initMicroFrontend } from './createApplication';
+import WindowHandler from './windowHandler';
+import { initMicroFrontend } from './initApplication';
 
 const popupLayoutStore = [
   {
@@ -19,10 +20,15 @@ const popupLayoutStore = [
   },
 ];
 
+const windowHandler = new WindowHandler();
+
 microFrontendsConfig.forEach((config) => initMicroFrontend(config));
 popupLayoutStore.forEach((layout) => {
   const microConfig = microFrontendsConfig.find(({ name }) => name === layout.name);
-  createNewWindowWithLayout(microConfig, layout);
+  windowHandler.createNewWindowWithLayout(microConfig, layout);
 })
 
 messageHub.listen();
+
+// Close windows on container tab being closed
+window.onbeforeunload = () => windowHandler.closeAllWindows();

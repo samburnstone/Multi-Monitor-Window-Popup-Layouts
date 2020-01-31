@@ -1,15 +1,7 @@
-export const createNewWindowWithLayout = (microfrontend, layout) => {
-  // Use screenX and screenY to position the popup
-  const popupWindow = window.open(
-    '',
-    "",
-    `height=${layout.height},width=${layout.width},resizable,scrollable,screenX=${layout.x},screenY=${layout.y}`
-  );
-
-  // initMicroFrontend(microfrontend, popupWindow.document);
-}
-
-export const initMicroFrontend = ({ containerElementId, bundleUrl, name }, document = window.document) => {
+export const initMicroFrontend = (
+  { containerElementId, bundleUrl, name },
+  document = window.document
+) => {
   const divEl = document.createElement('div');
   divEl.id = containerElementId;
   document.body.appendChild(divEl);

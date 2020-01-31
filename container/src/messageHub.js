@@ -1,5 +1,5 @@
 import microFrontendsConfig from './microfrontends.config';
-import { createNewWindowWithLayout } from './createApplication';
+import { createNewWindowWithLayout } from './windowHandler';
 
 const handleOpenPopup = payload => {
   const config = microFrontendsConfig.find(({ name }) => name === payload.name);
