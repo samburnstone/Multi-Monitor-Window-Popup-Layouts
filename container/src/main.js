@@ -1,6 +1,7 @@
+import * as messageHub from './messageHub';
 import microFrontendsConfig from './microfrontends.config';
 
-const initMicroFrontend = ({ containerElementId, bundleUrl, name }) => {
+export const initMicroFrontend = ({ containerElementId, bundleUrl, name }, document = window.document) => {
   const divEl = document.createElement('div');
   divEl.id = containerElementId;
   document.body.appendChild(divEl);
@@ -18,4 +19,6 @@ const loadMicroFrontend = (name, containerElementId) => {
   mountFn(containerElementId);
 };
 
-microFrontendsConfig.forEach(initMicroFrontend);
+microFrontendsConfig.forEach((config) => initMicroFrontend(config));
+
+messageHub.listen();
