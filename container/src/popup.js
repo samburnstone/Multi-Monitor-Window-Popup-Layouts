@@ -1,4 +1,4 @@
-const sharedWorker = require('sharedworker-loader!./message-worker.js')();
+const sharedWorker = require('sharedworker-loader!./message-bus')();
   sharedWorker.port.postMessage([10,10]);
   sharedWorker.port.onmessage = (e) => {
     console.log(e.data);
