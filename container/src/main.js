@@ -1,18 +1,18 @@
 const popupLayoutStore = [
   {
-    x: 0,
+    x: 1920,
     y: 200,
     width: 200,
     height: 200
   },
   {
-    x: 200,
+    x: 2120,
     y: 200,
     width: 200,
     height: 200
   },
   {
-    x: 1920, // should result in popup opening on second monitor (each one is 1920 in width)
+    x: 2600, // should result in popup opening on second monitor (each one is 1920 in width)
     y: 200,
     width: 200,
     height: 200
@@ -29,17 +29,36 @@ popupWithInitLayoutProps.onclick = () => popupLayoutStore.forEach(openInitLayout
 
 document.body.appendChild(popupWithInitLayoutProps);
 
-const openSelfResizingPopups = layout => {
-  window.open('../resized.html', null, `resizable`);
+const openSelfResizingPopups = async (layout) => {
   const sharedWorker = require('sharedworker-loader!./message-bus')();
-  sharedWorker.port.postMessage([10,10]);
-  sharedWorker.port.onmessage = (e) => {
-    console.log(e.data);
-  }
+
+  let promise = new Promise(res => {
+    sharedWorker.port.onmessage = (e) => {
+      if (e.data.type === 'F3DC/POPUP_HELLO') {
+        res(e.data.payload);
+      }
+    }
+  });
+
+  window.open('../resized.html', null, 'noopener,resizable');
+  const id = await promise;
+  console.log('New popup id', id);
+  sharedWorker.port.postMessage({
+    type: 'F3DC/layout',
+    payload: {
+      id,
+      layout
+    }
+  });
 };
 
 const selfResizingPopup = document.createElement('button');
 selfResizingPopup.innerText = 'Open popups that self-resize';
-selfResizingPopup.onclick = () => popupLayoutStore.forEach(openSelfResizingPopups);
+selfResizingPopup.onclick = async () => {
+  for (const popupLayout of popupLayoutStore) {
+    await openSelfResizingPopups(popupLayout);
+  }
+};
 
 document.body.appendChild(selfResizingPopup);
+

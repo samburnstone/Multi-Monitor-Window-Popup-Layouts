@@ -1,10 +1,20 @@
+let clients = [];
+
+const broadcast = (message, originator) => {
+  for (const client of clients) {
+    if (client === originator) {
+      continue;
+    }
+    client.postMessage(message);
+  }
+}
+
 onconnect = function(e) {
-  var port = e.ports[0];
+  const port = e.ports[0];
+  clients.push(port);
 
-  port.addEventListener('message', function(e) {
-    const workerResult = 'Result: ' + (e.data[0] * e.data[1]);
-    port.postMessage(workerResult);
-  });
-
-  port.start(); // Required when using addEventListener. Otherwise called implicitly by onmessage setter.
+  port.onmessage = (e) => {
+    // relay message to other clients for now
+    broadcast(e.data, port);
+  }
 }
