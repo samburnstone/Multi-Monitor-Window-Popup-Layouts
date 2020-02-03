@@ -4,6 +4,7 @@ module.exports = {
   mode: 'development',
   entry: {
     'main': './src/main.js',
+    'popup': './src/popup.js',
   },
   output: {
     publicPath: '/dist/',
