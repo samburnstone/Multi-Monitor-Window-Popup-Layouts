@@ -1,9 +1,6 @@
 import uuid from "uuid/v4";
-import MessageBusWorker from "../message-bus/message-bus.worker";
-import {
-  createHelloMessage,
-  MESSAGE_TYPES
-} from "../message-bus/message-factory";
+import MessageBusWorker from "message-bus/message-bus.worker";
+import { createHelloMessage, MESSAGE_TYPES } from "message-bus/message-factory";
 
 let id;
 

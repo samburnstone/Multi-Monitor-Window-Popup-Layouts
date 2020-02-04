@@ -1,15 +1,15 @@
-const path = require('path');
+const path = require("path");
 
 module.exports = {
-  mode: 'development',
+  mode: "development",
   entry: {
-    'container': './src/container',
-    'popup': './src/popup',
+    container: "./src/container",
+    popup: "./src/popup"
   },
   output: {
-    publicPath: '/dist/',
-    filename: '[name].js',
-    path: path.resolve(__dirname, 'dist'),
+    publicPath: "/dist/",
+    filename: "[name].js",
+    path: path.resolve(__dirname, "dist")
   },
   module: {
     rules: [
@@ -17,15 +17,16 @@ module.exports = {
         test: /\.worker.js$/,
         use: [
           {
-            loader: 'sharedworker-loader'
+            loader: "sharedworker-loader"
           }
         ]
       }
     ]
   },
   resolve: {
-    modules: [path.resolve(__dirname, 'node_modules')],
+    modules: [path.resolve(__dirname, "node_modules")],
+    "message-bus": path.resolve(__dirname, "src/message-bus")
   },
-  devtool: 'source-map',
+  devtool: "source-map",
   externals: []
 };
