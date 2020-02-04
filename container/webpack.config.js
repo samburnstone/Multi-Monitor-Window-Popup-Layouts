@@ -11,6 +11,18 @@ module.exports = {
     filename: '[name].js',
     path: path.resolve(__dirname, 'dist'),
   },
+  module: {
+    rules: [
+      {
+        test: /\.worker.js$/,
+        use: [
+          {
+            loader: 'sharedworker-loader'
+          }
+        ]
+      }
+    ]
+  },
   resolve: {
     modules: [path.resolve(__dirname, 'node_modules')],
   },

@@ -1,5 +1,5 @@
 import uuid from 'uuid/v4';
-import MessageBusWorker from 'sharedworker-loader!../message-bus';
+import MessageBusWorker from '../message-bus/message-bus.worker';
 
 let id;
 

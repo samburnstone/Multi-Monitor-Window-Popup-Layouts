@@ -1,5 +1,5 @@
 import layoutConfig from './layout.config';
-import MessageBusWorker from 'sharedworker-loader!../message-bus';
+import MessageBusWorker from '../message-bus/message-bus.worker';
 
 const sharedWorker = MessageBusWorker();
 
