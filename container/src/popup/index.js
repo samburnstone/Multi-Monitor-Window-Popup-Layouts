@@ -1,8 +1,10 @@
 import uuid from 'uuid/v4';
+import MessageBusWorker from 'sharedworker-loader!../message-bus';
 
 let id;
 
-const sharedWorker = require('sharedworker-loader!./message-bus')();
+const sharedWorker = MessageBusWorker();
+
 sharedWorker.port.onmessage = ({ data }) => {
   if (data.type === 'F3DC/layout' && data.payload.id === id) {
     const { x, y, width, height } = data.payload.layout;

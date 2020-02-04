@@ -3,8 +3,8 @@ const path = require('path');
 module.exports = {
   mode: 'development',
   entry: {
-    'main': './src/main.js',
-    'popup': './src/popup.js',
+    'container': './src/container',
+    'popup': './src/popup',
   },
   output: {
     publicPath: '/dist/',

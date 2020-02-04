@@ -1,4 +1,7 @@
 import layoutConfig from './layout.config';
+import MessageBusWorker from 'sharedworker-loader!../message-bus';
+
+const sharedWorker = MessageBusWorker();
 
 const openInitLayoutPopups = layout => {
   window.open('', null, `noopener,resizable,scrollable,width=${layout.width},height=${layout.height},top=${layout.y},left=${layout.x}`);
@@ -8,8 +11,6 @@ const popupWithInitLayoutProps = document.getElementById('open-init-layout-left'
 popupWithInitLayoutProps.onclick = () => layoutConfig.forEach(openInitLayoutPopups);
 
 const openSelfResizingPopups = async (layout) => {
-  const sharedWorker = require('sharedworker-loader!./message-bus')();
-
   let promise = new Promise(res => {
     sharedWorker.port.onmessage = (e) => {
       if (e.data.type === 'F3DC/POPUP_HELLO') {
@@ -18,7 +19,7 @@ const openSelfResizingPopups = async (layout) => {
     }
   });
 
-  window.open('../resized.html', null, 'noopener,resizable');
+  window.open('../popup.html', null, 'noopener,resizable');
   const id = await promise;
   sharedWorker.port.postMessage({
     type: 'F3DC/layout',
