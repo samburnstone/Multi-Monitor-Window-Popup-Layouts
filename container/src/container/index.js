@@ -4,9 +4,11 @@ import { MESSAGE_TYPES, createLayoutMessage } from '../message-bus/message-facto
 
 const sharedWorker = MessageBusWorker();
 
-const openInitLayoutPopups = layout => {
-  window.open('', null, `noopener,resizable,scrollable,width=${layout.width},height=${layout.height},top=${layout.y},left=${layout.x}`);
-};
+const openInitLayoutPopups = ({ x, y, width, height }) => window.open(
+  '',
+  null,
+  `noopener,resizable,scrollable,width=${width},height=${height},top=${y},left=${x}`
+);
 
 const popupWithInitLayoutProps = document.getElementById('open-init-layout-left');
 popupWithInitLayoutProps.onclick = () => layoutConfig.forEach(openInitLayoutPopups);
