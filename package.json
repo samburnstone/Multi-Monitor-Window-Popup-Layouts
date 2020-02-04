@@ -2,7 +2,16 @@
   "scripts": {
     "start": "webpack-dev-server --open"
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "pretty-quick --staged",
+      "pretty-quick": "pretty-quick"
+    }
+  },
   "devDependencies": {
+    "husky": "^4.2.1",
+    "prettier": "1.19.1",
+    "pretty-quick": "^2.0.1",
     "sharedworker-loader": "^2.1.1",
     "webpack": "^4.41.5",
     "webpack-cli": "^3.3.10",

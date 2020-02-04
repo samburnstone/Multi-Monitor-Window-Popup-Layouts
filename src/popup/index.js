@@ -1,6 +1,9 @@
-import uuid from 'uuid/v4';
-import MessageBusWorker from '../message-bus/message-bus.worker';
-import { createHelloMessage, MESSAGE_TYPES } from '../message-bus/message-factory';
+import uuid from "uuid/v4";
+import MessageBusWorker from "../message-bus/message-bus.worker";
+import {
+  createHelloMessage,
+  MESSAGE_TYPES
+} from "../message-bus/message-factory";
 
 let id;
 
@@ -15,7 +18,7 @@ sharedWorker.port.onmessage = ({ data }) => {
 };
 
 // Can't resize the document straight away - waiting until this event fires seems to work
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener("DOMContentLoaded", () => {
   id = uuid();
   sharedWorker.port.postMessage(createHelloMessage(id));
 });

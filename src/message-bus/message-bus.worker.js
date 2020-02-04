@@ -7,14 +7,14 @@ const broadcast = (message, originator) => {
     }
     client.postMessage(message);
   }
-}
+};
 
 onconnect = function(e) {
   const port = e.ports[0];
   clients.push(port);
 
-  port.onmessage = (e) => {
+  port.onmessage = e => {
     // relay message to other clients for now
     broadcast(e.data, port);
-  }
-}
+  };
+};
