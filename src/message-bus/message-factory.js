@@ -3,7 +3,8 @@ const prefix = "F3DC";
 export const MESSAGE_TYPES = {
   POPUP_HELLO: `${prefix}/POPUP_HELLO`,
   POPUP_INIT_LAYOUT: `${prefix}/POPUP_INIT_LAYOUT`,
-  POPUP_DISMISS: `${prefix}/POPUP_DISMISS`
+  POPUP_DISMISS: `${prefix}/POPUP_DISMISS`,
+  POPUP_LAYOUT_CHANGE: `${prefix}/POPUP_LAYOUT_CHANGE`
 };
 
 export const createHelloMessage = id => ({
@@ -11,7 +12,7 @@ export const createHelloMessage = id => ({
   payload: id
 });
 
-export const createLayoutMessage = (id, layout) => ({
+export const createLayoutInitMessage = (id, layout) => ({
   type: MESSAGE_TYPES.POPUP_INIT_LAYOUT,
   payload: {
     id,
@@ -21,4 +22,12 @@ export const createLayoutMessage = (id, layout) => ({
 
 export const createDismissPopUpMessage = () => ({
   type: MESSAGE_TYPES.POPUP_DISMISS
+});
+
+export const createPopupLayoutChangeMessage = (id, layout) => ({
+  type: MESSAGE_TYPES.POPUP_LAYOUT_CHANGE,
+  payload: {
+    id,
+    layout
+  }
 });

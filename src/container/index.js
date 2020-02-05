@@ -3,6 +3,7 @@ import MessageBusWorker from "message-bus/message-bus.worker";
 import layoutConfig from "./layout.config";
 import createPopupWithInitialProps from "./popup-creators/initial-props";
 import createSelfSizingPopup from "./popup-creators/self-sizing";
+import { startListeningForLayoutChanges } from "./layoutStore";
 
 const popupWithInitLayoutProps = document.getElementById(
   "open-init-layout-left"
@@ -28,3 +29,5 @@ document
   .getElementById("dismiss-popups")
   .addEventListener("click", dismissPopups);
 window.addEventListener("onbeforeunload", dismissPopups);
+
+startListeningForLayoutChanges();

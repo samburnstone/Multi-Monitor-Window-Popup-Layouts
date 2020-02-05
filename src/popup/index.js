@@ -1,6 +1,10 @@
 import uuid from "uuid/v4";
 import MessageBusWorker from "message-bus/message-bus.worker";
-import { createHelloMessage, MESSAGE_TYPES } from "message-bus/message-factory";
+import {
+  createHelloMessage,
+  createPopupLayoutChangeMessage,
+  MESSAGE_TYPES
+} from "message-bus/message-factory";
 
 let id;
 
@@ -22,3 +26,17 @@ document.addEventListener("DOMContentLoaded", () => {
   id = uuid();
   sharedWorker.port.postMessage(createHelloMessage(id));
 });
+
+// Send the current layout every 5 seconds
+setInterval(() => {
+  const currentLayout = {
+    x: window.screenLeft,
+    y: window.screenY,
+    width: window.width,
+    height: window.height
+  };
+
+  const message = createPopupLayoutChangeMessage(id, currentLayout);
+
+  sharedWorker.port.postMessage(message);
+}, 5000);

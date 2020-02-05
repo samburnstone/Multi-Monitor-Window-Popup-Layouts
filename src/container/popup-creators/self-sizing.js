@@ -1,7 +1,7 @@
 import MessageBusWorker from "message-bus/message-bus.worker";
 import {
   MESSAGE_TYPES,
-  createLayoutMessage
+  createLayoutInitMessage
 } from "message-bus/message-factory";
 
 const sharedWorker = MessageBusWorker();
@@ -17,5 +17,5 @@ export default async layout => {
 
   window.open("../popup.html", null, "noopener,resizable");
   const id = await promise;
-  sharedWorker.port.postMessage(createLayoutMessage(id, layout));
+  sharedWorker.port.postMessage(createLayoutInitMessage(id, layout));
 };
