@@ -24,8 +24,10 @@ module.exports = {
     ]
   },
   resolve: {
-    modules: [path.resolve(__dirname, "node_modules")],
-    "message-bus": path.resolve(__dirname, "src/message-bus")
+    alias: {
+      "message-bus": path.resolve(__dirname, "./src/message-bus")
+    },
+    modules: [path.resolve(__dirname, "node_modules")]
   },
   devtool: "source-map",
   externals: []
