@@ -12,6 +12,9 @@ sharedWorker.port.onmessage = ({ data }) => {
     resizeTo(width, height);
     moveTo(x, y); // Need to move after resizing, otherwise y will always be 0 for some reason!
   }
+  if (data.type === MESSAGE_TYPES.POPUP_DISMISS) {
+    window.close();
+  }
 };
 
 // Can't resize the document straight away - waiting until this event fires seems to work

@@ -1,3 +1,5 @@
+import { createDismissPopUpMessage } from "message-bus/message-factory";
+import MessageBusWorker from "message-bus/message-bus.worker";
 import layoutConfig from "./layout.config";
 import createPopupWithInitialProps from "./popup-creators/initial-props";
 import createSelfSizingPopup from "./popup-creators/self-sizing";
@@ -15,4 +17,11 @@ selfResizingPopup.onclick = async () => {
   }
 };
 
-document.body.appendChild(selfResizingPopup);
+const dismissPopups = () => {
+  const sharedWorker = MessageBusWorker();
+  const message = createDismissPopUpMessage();
+  sharedWorker.port.postMessage(message);
+};
+
+document.getElementById("dismiss-popups").onclick = dismissPopups;
+window.onbeforeunload = dismissPopups;
