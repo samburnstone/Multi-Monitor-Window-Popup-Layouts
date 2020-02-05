@@ -7,15 +7,16 @@ import createSelfSizingPopup from "./popup-creators/self-sizing";
 const popupWithInitLayoutProps = document.getElementById(
   "open-init-layout-left"
 );
-popupWithInitLayoutProps.onclick = () =>
-  layoutConfig.forEach(createPopupWithInitialProps);
+popupWithInitLayoutProps.addEventListener("click", () =>
+  layoutConfig.forEach(createPopupWithInitialProps)
+);
 
 const selfResizingPopup = document.getElementById("open-self-resizing");
-selfResizingPopup.onclick = async () => {
+selfResizingPopup.addEventListener("click", async () => {
   for (const layout of layoutConfig) {
     await createSelfSizingPopup(layout);
   }
-};
+});
 
 const dismissPopups = () => {
   const sharedWorker = MessageBusWorker();
@@ -23,5 +24,7 @@ const dismissPopups = () => {
   sharedWorker.port.postMessage(message);
 };
 
-document.getElementById("dismiss-popups").onclick = dismissPopups;
-window.onbeforeunload = dismissPopups;
+document
+  .getElementById("dismiss-popups")
+  .addEventListener("click", dismissPopups);
+window.addEventListener("onbeforeunload", dismissPopups);
