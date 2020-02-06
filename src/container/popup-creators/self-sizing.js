@@ -6,16 +6,17 @@ import {
 
 const sharedWorker = MessageBusWorker();
 
-export default async layout => {
-  let promise = new Promise(res => {
+export default async (id, layout) => {
+  const promise = new Promise(res => {
     sharedWorker.port.onmessage = e => {
       if (e.data.type === MESSAGE_TYPES.POPUP_HELLO) {
-        res(e.data.payload);
+        res();
       }
     };
   });
 
   window.open("../popup.html", null, "noopener,resizable");
-  const id = await promise;
+  // TODO: work out if we can move the promise here rather than creating it before
+  await promise;
   sharedWorker.port.postMessage(createLayoutInitMessage(id, layout));
 };
