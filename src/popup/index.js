@@ -21,7 +21,7 @@ sharedWorker.port.onmessage = ({ data }) => {
     moveTo(x, y); // Need to move after resizing, otherwise y will always be 0 for some reason!
     startReportingLayout();
   }
-  if (data.type === MESSAGE_TYPES.POPUP_DISMISS) {
+  if (data.type === MESSAGE_TYPES.POPUP_DISMISS_ALL) {
     window.close();
   }
 };

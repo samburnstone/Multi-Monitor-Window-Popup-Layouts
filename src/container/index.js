@@ -1,5 +1,5 @@
 import uuid from "uuid/v4";
-import { createDismissPopUpMessage } from "message-bus/message-factory";
+import { createDismissAllPopupsMessage } from "message-bus/message-factory";
 import MessageBusWorker from "message-bus/message-bus.worker";
 import createPopupWithInitialProps from "./popup-creators/initial-props";
 import createSelfSizingPopup from "./popup-creators/self-sizing";
@@ -37,7 +37,7 @@ const createPopup = async () => {
 
 const dismissPopups = () => {
   const sharedWorker = MessageBusWorker();
-  const message = createDismissPopUpMessage();
+  const message = createDismissAllPopupsMessage();
   sharedWorker.port.postMessage(message);
 };
 
