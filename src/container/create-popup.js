@@ -7,7 +7,7 @@ import {
 const sharedWorker = MessageBusWorker();
 
 export default async (id, layout) => {
-  const promise = new Promise(res => {
+  const isPopupReadyPromise = new Promise(res => {
     sharedWorker.port.onmessage = e => {
       if (e.data.type === MESSAGE_TYPES.POPUP_READY) {
         res();
@@ -16,7 +16,7 @@ export default async (id, layout) => {
   });
 
   window.open("../popup.html", null, "noopener,resizable");
-  // TODO: work out if we can move the promise here rather than creating it before
-  await promise;
+
+  await isPopupReadyPromise;
   sharedWorker.port.postMessage(createLayoutInitMessage(id, layout));
 };
