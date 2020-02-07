@@ -9,7 +9,7 @@ const sharedWorker = MessageBusWorker();
 export default async (id, layout) => {
   const promise = new Promise(res => {
     sharedWorker.port.onmessage = e => {
-      if (e.data.type === MESSAGE_TYPES.POPUP_HELLO) {
+      if (e.data.type === MESSAGE_TYPES.POPUP_READY) {
         res();
       }
     };

@@ -1,6 +1,6 @@
 import MessageBusWorker from "message-bus/message-bus.worker";
 import {
-  createHelloMessage,
+  createPopupReadyMessage,
   createPopupLayoutChangeMessage,
   MESSAGE_TYPES
 } from "message-bus/message-factory";
@@ -28,7 +28,7 @@ sharedWorker.port.onmessage = ({ data }) => {
 
 // Can't resize the document straight away - waiting until this event fires seems to work
 document.addEventListener("DOMContentLoaded", () => {
-  sharedWorker.port.postMessage(createHelloMessage());
+  sharedWorker.port.postMessage(createPopupReadyMessage());
 });
 
 // Report the current layout every 0.5 seconds
