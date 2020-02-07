@@ -1,21 +1,22 @@
 import MessageBusWorker from "message-bus/message-bus.worker";
 import {
   MESSAGE_TYPES,
-  createLayoutMessage
+  createLayoutInitMessage
 } from "message-bus/message-factory";
 
 const sharedWorker = MessageBusWorker();
 
-export default async layout => {
-  let promise = new Promise(res => {
+export default async (id, layout) => {
+  const isPopupReadyPromise = new Promise(res => {
     sharedWorker.port.onmessage = e => {
-      if (e.data.type === MESSAGE_TYPES.POPUP_HELLO) {
-        res(e.data.payload);
+      if (e.data.type === MESSAGE_TYPES.POPUP_READY) {
+        res();
       }
     };
   });
 
   window.open("../popup.html", null, "noopener,resizable");
-  const id = await promise;
-  sharedWorker.port.postMessage(createLayoutMessage(id, layout));
+
+  await isPopupReadyPromise;
+  sharedWorker.port.postMessage(createLayoutInitMessage(id, layout));
 };
