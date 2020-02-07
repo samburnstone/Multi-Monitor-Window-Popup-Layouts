@@ -21,8 +21,25 @@ export const startListeningForLayoutChanges = () => {
 
       localStorage.setItem(LAYOUT_STORAGE_KEY, JSON.stringify(popups));
     }
+
+    if (event.data.type === MESSAGE_TYPES.POPUP_DISMISSED) {
+      const { id: popupId } = event.data.payload;
+      const popups = getPopupsFromStorage();
+      const currentIndex = popups.findIndex(({ id }) => id === popupId);
+
+      if (currentIndex === -1) {
+        return;
+      }
+
+      popups.splice(currentIndex, 1);
+
+      localStorage.setItem(LAYOUT_STORAGE_KEY, JSON.stringify(popups));
+    }
   };
 };
 
 export const getPopupsFromStorage = () =>
   JSON.parse(localStorage.getItem(LAYOUT_STORAGE_KEY)) || [];
+
+export const removeAllPopupsFromStorage = () =>
+  localStorage.setItem(LAYOUT_STORAGE_KEY, JSON.stringify([]));

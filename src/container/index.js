@@ -5,7 +5,8 @@ import createPopupWithInitialProps from "./popup-creators/initial-props";
 import createSelfSizingPopup from "./popup-creators/self-sizing";
 import {
   getPopupsFromStorage,
-  startListeningForLayoutChanges
+  startListeningForLayoutChanges,
+  removeAllPopupsFromStorage
 } from "./popupStore";
 
 const popupWithInitLayoutProps = document.getElementById(
@@ -41,10 +42,13 @@ const dismissPopups = () => {
   sharedWorker.port.postMessage(message);
 };
 
-document
-  .getElementById("dismiss-popups")
-  .addEventListener("click", dismissPopups);
-window.addEventListener("onbeforeunload", dismissPopups);
+document.getElementById("dismiss-popups").addEventListener("click", () => {
+  dismissPopups();
+  // Pressing the button should remove the popups from the store
+  removeAllPopupsFromStorage();
+});
+// Closing the container page should dismiss the popups, but retain them in local storage
+window.addEventListener("beforeunload", dismissPopups);
 
 document
   .getElementById("create-new-popup")
