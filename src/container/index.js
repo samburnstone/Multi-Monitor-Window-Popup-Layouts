@@ -1,7 +1,7 @@
 import uuid from "uuid/v4";
-import { createDismissAllPopupsMessage } from "message-bus/message-factory";
-import MessageBusWorker from "message-bus/message-bus.worker";
-import createPopup from "./create-popup";
+import { createDismissAllPopupsMessage } from "message-bus/messageFactory";
+import MessageBusWorker from "message-bus/messageBus.worker";
+import createPopup from "./createPopup";
 import {
   getPopupsFromStorage,
   startListeningForLayoutChanges,

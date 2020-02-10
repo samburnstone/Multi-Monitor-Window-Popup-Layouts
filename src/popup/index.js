@@ -1,10 +1,10 @@
-import MessageBusWorker from "message-bus/message-bus.worker";
+import MessageBusWorker from "message-bus/messageBus.worker";
 import {
   createPopupReadyMessage,
   createPopupLayoutChangeMessage,
   createPopupDismissedMessage,
   MESSAGE_TYPES
-} from "message-bus/message-factory";
+} from "message-bus/messageFactory";
 
 const id = window.location.search.split("=")[1]; // Bit of a hack to get the id... shall do this nicer in a bit
 let isBeingClosedByWindow = false;

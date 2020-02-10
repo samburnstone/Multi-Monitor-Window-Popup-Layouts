@@ -1,8 +1,8 @@
-import MessageBusWorker from "message-bus/message-bus.worker";
+import MessageBusWorker from "message-bus/messageBus.worker";
 import {
   MESSAGE_TYPES,
   createLayoutInitMessage
-} from "message-bus/message-factory";
+} from "message-bus/messageFactory";
 
 const sharedWorker = MessageBusWorker();
 

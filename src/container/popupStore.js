@@ -1,5 +1,5 @@
-import MessageBusWorker from "message-bus/message-bus.worker";
-import { MESSAGE_TYPES } from "message-bus/message-factory";
+import MessageBusWorker from "message-bus/messageBus.worker";
+import { MESSAGE_TYPES } from "message-bus/messageFactory";
 
 const LAYOUT_STORAGE_KEY = "F3DC/popups";
 
