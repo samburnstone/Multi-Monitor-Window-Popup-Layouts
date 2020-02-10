@@ -6,18 +6,17 @@ import {
   MESSAGE_TYPES
 } from "message-bus/message-factory";
 
-let id;
+const id = window.location.search.split("=")[1]; // Bit of a hack to get the id... shall do this nicer in a bit
 let isBeingClosedByWindow = false;
 
 const sharedWorker = MessageBusWorker();
 
 sharedWorker.port.onmessage = ({ data }) => {
   if (data.type === MESSAGE_TYPES.POPUP_INIT_LAYOUT) {
-    if (!!id) {
-      // If the popup's already been given an id then this message can't be for us
+    if (id !== data.payload.id) {
+      // Layout info isn't for this popup
       return;
     }
-    id = data.payload.id;
     const { x, y, width, height } = data.payload.layout;
     resizeTo(width, height);
     moveTo(x, y); // Need to move after resizing, otherwise y will always be 0 for some reason!
@@ -32,6 +31,7 @@ sharedWorker.port.onmessage = ({ data }) => {
 // Can't resize the document straight away - waiting until this event fires seems to work
 document.addEventListener("DOMContentLoaded", () => {
   sharedWorker.port.postMessage(createPopupReadyMessage());
+  startReportingLayout();
 });
 
 // Report the current layout every 0.5 seconds
