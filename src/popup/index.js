@@ -11,29 +11,6 @@ let isBeingClosedByWindow = false;
 
 const sharedWorker = MessageBusWorker();
 
-sharedWorker.port.onmessage = ({ data }) => {
-  if (data.type === MESSAGE_TYPES.POPUP_INIT_LAYOUT) {
-    if (id !== data.payload.id) {
-      // Layout info isn't for this popup
-      return;
-    }
-    const { x, y, width, height } = data.payload.layout;
-    resizeTo(width, height);
-    moveTo(x, y); // Need to move after resizing, otherwise y will always be 0 for some reason!
-    startReportingLayout();
-  }
-  if (data.type === MESSAGE_TYPES.POPUP_DISMISS_ALL) {
-    isBeingClosedByWindow = true;
-    window.close();
-  }
-};
-
-// Can't resize the document straight away - waiting until this event fires seems to work
-document.addEventListener("DOMContentLoaded", () => {
-  sharedWorker.port.postMessage(createPopupReadyMessage());
-  startReportingLayout();
-});
-
 // Report the current layout every 0.5 seconds
 const startReportingLayout = () => {
   setInterval(() => {
@@ -49,6 +26,30 @@ const startReportingLayout = () => {
     sharedWorker.port.postMessage(message);
   }, 500);
 };
+
+sharedWorker.port.onmessage = ({ data }) => {
+  if (data.type === MESSAGE_TYPES.POPUP_INIT_LAYOUT) {
+    if (id !== data.payload.id) {
+      // Layout info isn't for this popup
+      return;
+    }
+    const { x, y, width, height } = data.payload.layout;
+    window.resizeTo(width, height);
+    // Need to move after resizing, otherwise y will always be 0 for some reason!
+    window.moveTo(x, y);
+    startReportingLayout();
+  }
+  if (data.type === MESSAGE_TYPES.POPUP_DISMISS_ALL) {
+    isBeingClosedByWindow = true;
+    window.close();
+  }
+};
+
+// Can't resize the document straight away - waiting until this event fires seems to work
+document.addEventListener("DOMContentLoaded", () => {
+  sharedWorker.port.postMessage(createPopupReadyMessage());
+  startReportingLayout();
+});
 
 window.addEventListener("beforeunload", () => {
   if (isBeingClosedByWindow) {

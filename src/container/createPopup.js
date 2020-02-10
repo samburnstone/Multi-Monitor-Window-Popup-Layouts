@@ -15,7 +15,7 @@ export default async (id, layout) => {
     };
   });
 
-  window.open(`../popup.html?id=${id}`, null, `noopener,resizable`);
+  window.open(`../popup.html?id=${id}`, null, "noopener,resizable");
 
   await isPopupReadyPromise;
   sharedWorker.port.postMessage(createLayoutInitMessage(id, layout));

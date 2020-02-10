@@ -10,6 +10,7 @@ import {
 
 window.addEventListener("load", async () => {
   for (const { id, layout } of getPopupsFromStorage()) {
+    // eslint-disable-next-line no-await-in-loop
     await createPopup(id, layout);
   }
 });

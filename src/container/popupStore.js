@@ -3,6 +3,13 @@ import { MESSAGE_TYPES } from "message-bus/messageFactory";
 
 const LAYOUT_STORAGE_KEY = "F3DC/popups";
 
+export const getPopupsFromStorage = () =>
+  JSON.parse(localStorage.getItem(LAYOUT_STORAGE_KEY)) || [];
+
+// eslint-disable-next-line max-len
+export const removeAllPopupsFromStorage = () =>
+  localStorage.setItem(LAYOUT_STORAGE_KEY, JSON.stringify([]));
+
 export const startListeningForLayoutChanges = () => {
   const sharedWorker = MessageBusWorker();
   sharedWorker.port.onmessage = event => {
@@ -37,9 +44,3 @@ export const startListeningForLayoutChanges = () => {
     }
   };
 };
-
-export const getPopupsFromStorage = () =>
-  JSON.parse(localStorage.getItem(LAYOUT_STORAGE_KEY)) || [];
-
-export const removeAllPopupsFromStorage = () =>
-  localStorage.setItem(LAYOUT_STORAGE_KEY, JSON.stringify([]));
