@@ -7,11 +7,12 @@ import {
   startListeningForLayoutChanges,
   removeAllPopupsFromStorage
 } from "./popupStore";
+import { getIsNoopener, setIsNoopener } from "./noopenerStore";
 
 window.addEventListener("load", async () => {
   for (const { id, layout } of getPopupsFromStorage()) {
     // eslint-disable-next-line no-await-in-loop
-    await createPopup(id, layout);
+    await createPopup(id, layout, getIsNoopener());
   }
 });
 
@@ -25,7 +26,7 @@ const handleCreatePopup = async () => {
   };
   // Newly created popup requested by user, so needs to be assigned an id
   const id = uuid();
-  createPopup(id, initialLayout);
+  createPopup(id, initialLayout, getIsNoopener());
 };
 
 const handleDismissPopups = () => {
@@ -45,5 +46,11 @@ window.addEventListener("beforeunload", handleDismissPopups);
 document
   .getElementById("create-new-popup")
   .addEventListener("click", handleCreatePopup);
+
+const checkboxEl = document.getElementById("noopener");
+checkboxEl.checked = getIsNoopener();
+checkboxEl.addEventListener("change", () => {
+  setIsNoopener(checkboxEl.checked);
+});
 
 startListeningForLayoutChanges();
