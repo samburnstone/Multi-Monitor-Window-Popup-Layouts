@@ -1,3 +1,4 @@
+import queryString from "query-string";
 import createMessageBus from "message-bus";
 import {
   createPopupReadyMessage,
@@ -6,7 +7,7 @@ import {
   MESSAGE_TYPES
 } from "message-bus/messageFactory";
 
-const id = window.location.search.split("=")[1]; // Bit of a hack to get the id... shall do this nicer in a bit
+const { id } = queryString.parse(window.location.search);
 let isBeingClosedByWindow = false;
 
 const messageBus = createMessageBus();
@@ -60,3 +61,8 @@ window.addEventListener("beforeunload", () => {
   const message = createPopupDismissedMessage(id);
   messageBus.port.postMessage(message);
 });
+
+setInterval(() => {
+  const el = document.getElementById("random");
+  el.innerText = Math.round(Math.random() * 100);
+}, 100);

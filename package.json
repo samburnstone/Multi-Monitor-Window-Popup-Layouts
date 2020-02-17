@@ -24,6 +24,7 @@
     "worker-plugin-shared": "^3.2.1"
   },
   "dependencies": {
+    "query-string": "^6.11.0",
     "uuid": "^3.4.0"
   }
 }
