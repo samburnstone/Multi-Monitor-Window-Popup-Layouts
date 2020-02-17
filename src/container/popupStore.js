@@ -14,7 +14,6 @@ const messageBus = createMessageBus();
 
 export const startListeningForLayoutChanges = () => {
   messageBus.port.onmessage = event => {
-    console.log("Receiving message");
     if (event.data.type === MESSAGE_TYPES.POPUP_LAYOUT_CHANGE) {
       const popup = event.data.payload;
       const popups = getPopupsFromStorage();
