@@ -1,13 +1,14 @@
 import queryString from "query-string";
 import createMessageBus from "message-bus";
 import {
-  createPopupReadyMessage,
   createPopupLayoutChangeMessage,
   createPopupDismissedMessage,
   MESSAGE_TYPES
 } from "message-bus/messageFactory";
 
-const { id } = queryString.parse(window.location.search);
+const params = queryString.parse(window.location.search);
+const { id } = params;
+
 let isBeingClosedByWindow = false;
 
 const messageBus = createMessageBus();
@@ -29,17 +30,6 @@ const startReportingLayout = () => {
 };
 
 messageBus.port.onmessage = ({ data }) => {
-  if (data.type === MESSAGE_TYPES.POPUP_INIT_LAYOUT) {
-    if (id !== data.payload.id) {
-      // Layout info isn't for this popup
-      return;
-    }
-    const { x, y, width, height } = data.payload.layout;
-    window.resizeTo(width, height);
-    // Need to move after resizing, otherwise y will always be 0 for some reason!
-    window.moveTo(x, y);
-    startReportingLayout();
-  }
   if (data.type === MESSAGE_TYPES.POPUP_DISMISS_ALL) {
     isBeingClosedByWindow = true;
     window.close();
@@ -48,7 +38,11 @@ messageBus.port.onmessage = ({ data }) => {
 
 // Can't resize the document straight away - waiting until this event fires seems to work
 document.addEventListener("DOMContentLoaded", () => {
-  messageBus.port.postMessage(createPopupReadyMessage());
+  // Layout is sent in format "<x>,<y>,<width>,<height>"
+  const initialLayout = params.layout.split(",");
+  window.resizeTo(initialLayout[2], initialLayout[3]);
+  // Need to move after resizing, otherwise y will always be 0 for some reason!
+  window.moveTo(initialLayout[0], initialLayout[1]);
   startReportingLayout();
 });
 
