@@ -1,2 +1,1 @@
-export default () =>
-  new SharedWorker("./messageBus.worker", { type: "module" });
+export default () => new SharedWorker("./messageBus", { type: "module" });
