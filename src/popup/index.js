@@ -1,4 +1,4 @@
-import MessageBusWorker from "message-bus/messageBus.worker";
+import createMessageBus from "message-bus";
 import {
   createPopupReadyMessage,
   createPopupLayoutChangeMessage,
@@ -9,7 +9,7 @@ import {
 const id = window.location.search.split("=")[1]; // Bit of a hack to get the id... shall do this nicer in a bit
 let isBeingClosedByWindow = false;
 
-const sharedWorker = MessageBusWorker();
+const messageBus = createMessageBus();
 
 // Report the current layout every 0.5 seconds
 const startReportingLayout = () => {
@@ -23,11 +23,11 @@ const startReportingLayout = () => {
 
     const message = createPopupLayoutChangeMessage(id, currentLayout);
 
-    sharedWorker.port.postMessage(message);
+    messageBus.port.postMessage(message);
   }, 500);
 };
 
-sharedWorker.port.onmessage = ({ data }) => {
+messageBus.port.onmessage = ({ data }) => {
   if (data.type === MESSAGE_TYPES.POPUP_INIT_LAYOUT) {
     if (id !== data.payload.id) {
       // Layout info isn't for this popup
@@ -47,7 +47,7 @@ sharedWorker.port.onmessage = ({ data }) => {
 
 // Can't resize the document straight away - waiting until this event fires seems to work
 document.addEventListener("DOMContentLoaded", () => {
-  sharedWorker.port.postMessage(createPopupReadyMessage());
+  messageBus.port.postMessage(createPopupReadyMessage());
   startReportingLayout();
 });
 
@@ -58,5 +58,5 @@ window.addEventListener("beforeunload", () => {
     return;
   }
   const message = createPopupDismissedMessage(id);
-  sharedWorker.port.postMessage(message);
+  messageBus.port.postMessage(message);
 });

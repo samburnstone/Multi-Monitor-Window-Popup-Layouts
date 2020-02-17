@@ -1,6 +1,6 @@
 import uuid from "uuid/v4";
 import { createDismissAllPopupsMessage } from "message-bus/messageFactory";
-import MessageBusWorker from "message-bus/messageBus.worker";
+import createMessageBus from "message-bus";
 import createPopup from "./createPopup";
 import {
   getPopupsFromStorage,
@@ -8,6 +8,8 @@ import {
   removeAllPopupsFromStorage
 } from "./popupStore";
 import { getIsNoopener, setIsNoopener } from "./noopenerStore";
+
+const messageBus = createMessageBus();
 
 window.addEventListener("load", async () => {
   for (const { id, layout } of getPopupsFromStorage()) {
@@ -30,9 +32,8 @@ const handleCreatePopup = async () => {
 };
 
 const handleDismissPopups = () => {
-  const sharedWorker = MessageBusWorker();
   const message = createDismissAllPopupsMessage();
-  sharedWorker.port.postMessage(message);
+  messageBus.port.postMessage(message);
 };
 
 document.getElementById("dismiss-popups").addEventListener("click", () => {

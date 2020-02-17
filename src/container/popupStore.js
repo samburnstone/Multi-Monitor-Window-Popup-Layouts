@@ -1,4 +1,4 @@
-import MessageBusWorker from "message-bus/messageBus.worker";
+import createMessageBus from "message-bus";
 import { MESSAGE_TYPES } from "message-bus/messageFactory";
 
 const LAYOUT_STORAGE_KEY = "F3DC/popups";
@@ -10,9 +10,11 @@ export const getPopupsFromStorage = () =>
 export const removeAllPopupsFromStorage = () =>
   localStorage.setItem(LAYOUT_STORAGE_KEY, JSON.stringify([]));
 
+const messageBus = createMessageBus();
+
 export const startListeningForLayoutChanges = () => {
-  const sharedWorker = MessageBusWorker();
-  sharedWorker.port.onmessage = event => {
+  messageBus.port.onmessage = event => {
+    console.log("Receiving message");
     if (event.data.type === MESSAGE_TYPES.POPUP_LAYOUT_CHANGE) {
       const popup = event.data.payload;
       const popups = getPopupsFromStorage();

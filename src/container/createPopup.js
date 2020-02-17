@@ -1,14 +1,14 @@
-import MessageBusWorker from "message-bus/messageBus.worker";
+import createMessageBus from "message-bus";
 import {
   MESSAGE_TYPES,
   createLayoutInitMessage
 } from "message-bus/messageFactory";
 
-const sharedWorker = MessageBusWorker();
+const messageBus = createMessageBus();
 
 export default async (id, layout, isNoopener) => {
   const isPopupReadyPromise = new Promise(res => {
-    sharedWorker.port.onmessage = e => {
+    messageBus.port.onmessage = e => {
       if (e.data.type === MESSAGE_TYPES.POPUP_READY) {
         res();
       }
@@ -31,5 +31,5 @@ export default async (id, layout, isNoopener) => {
   window.open(`../popup.html?id=${id}`, id, windowFeatures.join(","));
 
   await isPopupReadyPromise;
-  sharedWorker.port.postMessage(createLayoutInitMessage(id, layout));
+  messageBus.port.postMessage(createLayoutInitMessage(id, layout));
 };

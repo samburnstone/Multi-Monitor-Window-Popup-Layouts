@@ -1,3 +1,4 @@
+const WorkerPlugin = require("worker-plugin-shared");
 const path = require("path");
 
 module.exports = {
@@ -11,18 +12,7 @@ module.exports = {
     filename: "[name].js",
     path: path.resolve(__dirname, "dist")
   },
-  module: {
-    rules: [
-      {
-        test: /\.worker.js$/,
-        use: [
-          {
-            loader: "sharedworker-loader"
-          }
-        ]
-      }
-    ]
-  },
+  plugins: [new WorkerPlugin()],
   resolve: {
     alias: {
       "message-bus": path.resolve(__dirname, "./src/message-bus")
