@@ -1,3 +1,4 @@
+const CopyPlugin = require("copy-webpack-plugin");
 const WorkerPlugin = require("worker-plugin-shared");
 const path = require("path");
 
@@ -8,11 +9,10 @@ module.exports = {
     popup: "./src/popup"
   },
   output: {
-    publicPath: "/dist/",
     filename: "[name].js",
     path: path.resolve(__dirname, "dist")
   },
-  plugins: [new WorkerPlugin()],
+  plugins: [new CopyPlugin([{ from: "./*.html" }]), new WorkerPlugin()],
   resolve: {
     alias: {
       "message-bus": path.resolve(__dirname, "./src/message-bus")
@@ -20,5 +20,9 @@ module.exports = {
     modules: [path.resolve(__dirname, "node_modules")]
   },
   devtool: "source-map",
+  devServer: {
+    publicPath: "/",
+    contentBase: path.resolve(__dirname, "dist")
+  },
   externals: []
 };
