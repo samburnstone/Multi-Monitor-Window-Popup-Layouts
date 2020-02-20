@@ -1,4 +1,3 @@
-import uuid from "uuid/v4";
 import { createDismissAllPopupsMessage } from "message-bus/messageFactory";
 import createMessageBus from "message-bus";
 import createPopup from "./createPopup";
@@ -9,12 +8,15 @@ import {
 } from "./popupStore";
 import { getIsNoopener, setIsNoopener } from "./noopenerStore";
 
+let currentId = 0;
+
 const messageBus = createMessageBus();
 
 window.addEventListener("load", async () => {
   for (const { id, layout } of getPopupsFromStorage()) {
     // eslint-disable-next-line no-await-in-loop
     await createPopup(id, layout, getIsNoopener());
+    currentId = Number(id);
   }
 });
 
@@ -27,8 +29,8 @@ const handleCreatePopup = async () => {
     height: 400
   };
   // Newly created popup requested by user, so needs to be assigned an id
-  const id = uuid();
-  createPopup(id, initialLayout, getIsNoopener());
+  currentId += 1;
+  createPopup(currentId, initialLayout, getIsNoopener());
 };
 
 const handleDismissPopups = () => {

@@ -30,7 +30,6 @@
   "dependencies": {
     "d3": "^5.15.0",
     "d3fc": "^14.1.30",
-    "query-string": "^6.11.0",
-    "uuid": "^3.4.0"
+    "query-string": "^6.11.0"
   }
 }

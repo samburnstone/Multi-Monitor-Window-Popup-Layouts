@@ -12,6 +12,8 @@ const { id } = params;
 
 let isBeingClosedByWindow = false;
 
+window.document.title = `Stock ${id}`;
+
 const messageBus = createMessageBus();
 
 // Report the current layout every 0.5 seconds
