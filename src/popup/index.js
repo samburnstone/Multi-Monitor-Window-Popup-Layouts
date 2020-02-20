@@ -5,6 +5,7 @@ import {
   createPopupDismissedMessage,
   MESSAGE_TYPES
 } from "message-bus/messageFactory";
+import "./chart"; // Import the chart file so it gets bundled by webpack
 
 const params = queryString.parse(window.location.search);
 const { id } = params;
@@ -55,8 +56,3 @@ window.addEventListener("beforeunload", () => {
   const message = createPopupDismissedMessage(id);
   messageBus.port.postMessage(message);
 });
-
-setInterval(() => {
-  const el = document.getElementById("random");
-  el.innerText = Math.round(Math.random() * 100);
-}, 100);
