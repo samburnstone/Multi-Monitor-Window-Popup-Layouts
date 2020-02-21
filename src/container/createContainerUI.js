@@ -39,19 +39,32 @@ export default () => {
     messageBus.port.postMessage(message);
   };
 
-  document.getElementById("dismiss-popups").addEventListener("click", () => {
+  const dismissPopupsButtonEl = document.createElement("button");
+  document.body.appendChild(dismissPopupsButtonEl);
+  dismissPopupsButtonEl.innerText = "Dismiss all popups";
+  dismissPopupsButtonEl.addEventListener("click", () => {
     handleDismissPopups();
     // Pressing the button should remove the popups from the store
     removeAllPopupsFromStorage();
   });
+
+  document.writeln("<br /><br />");
+
   // Closing the container page should dismiss the popups, but retain them in local storage
   window.addEventListener("beforeunload", handleDismissPopups);
 
-  document
-    .getElementById("create-new-popup")
-    .addEventListener("click", handleCreatePopup);
+  const createNewPopupButtonEl = document.createElement("button");
+  document.body.appendChild(createNewPopupButtonEl);
+  createNewPopupButtonEl.innerText = "Create new popup";
+  createNewPopupButtonEl.addEventListener("click", handleCreatePopup);
 
-  const checkboxEl = document.getElementById("noopener");
+  const labelEl = document.createElement("label");
+  document.body.appendChild(labelEl);
+  labelEl.innerText = "Use noopener";
+
+  const checkboxEl = document.createElement("input");
+  document.body.appendChild(checkboxEl);
+  checkboxEl.type = "checkbox";
   checkboxEl.checked = getIsNoopener();
   checkboxEl.addEventListener("change", () => {
     setIsNoopener(checkboxEl.checked);

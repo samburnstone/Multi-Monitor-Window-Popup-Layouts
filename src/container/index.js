@@ -1,8 +1,8 @@
 import testPopupsEnabled from "./testPopupsEnabled";
-import popupHandler from "./popupHandling";
+import createContainerUI from "./createContainerUI";
 
 if (testPopupsEnabled()) {
-  popupHandler();
+  createContainerUI();
 } else {
   document.writeln("<h1>Looks like your browser is blocking pop-ups.</h1>");
   document.writeln("<p>Please enable them and then refresh the page.</p>");
