@@ -26,7 +26,7 @@ export default () => {
     const initialLayout = {
       x: window.screenLeft,
       y: window.screenTop,
-      width: 200,
+      width: 400,
       height: 400
     };
     // Newly created popup requested by user, so needs to be assigned an id
