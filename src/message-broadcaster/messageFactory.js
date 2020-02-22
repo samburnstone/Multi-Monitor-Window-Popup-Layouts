@@ -1,16 +1,10 @@
 const prefix = "F3DC";
 
 export const MESSAGE_TYPES = {
-  POPUP_READY: `${prefix}/POPUP_READY`,
   POPUP_DISMISS_ALL: `${prefix}/POPUP_DISMISS_ALL`,
   POPUP_LAYOUT_CHANGE: `${prefix}/POPUP_LAYOUT_CHANGE`,
   POPUP_DISMISSED: `${prefix}/POPUP_DISMISSED`
 };
-
-export const createPopupReadyMessage = id => ({
-  type: MESSAGE_TYPES.POPUP_READY,
-  payload: id
-});
 
 export const createDismissAllPopupsMessage = () => ({
   type: MESSAGE_TYPES.POPUP_DISMISS_ALL

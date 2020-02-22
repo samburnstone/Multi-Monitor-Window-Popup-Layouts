@@ -2,6 +2,7 @@ import { createDismissAllPopupsMessage } from "message-broadcaster/messageFactor
 import createMessageBroadcaster from "message-broadcaster";
 import createPopup from "./createPopup";
 import {
+  addPopup,
   getPopupsFromStorage,
   startListeningForLayoutChanges,
   removeAllPopupsFromStorage
@@ -14,14 +15,14 @@ export default () => {
   const messageBroadcaster = createMessageBroadcaster();
 
   window.addEventListener("load", async () => {
-    for (const { id, layout } of getPopupsFromStorage()) {
+    for (const { id, layout, stockName } of getPopupsFromStorage()) {
       // eslint-disable-next-line no-await-in-loop
-      await createPopup(id, layout, getIsNoopener());
+      await createPopup(id, stockName, layout, getIsNoopener());
       currentId = Number(id);
     }
   });
 
-  const handleCreatePopup = async () => {
+  const handleCreatePopup = stockName => {
     // Position the popup near the top of the current window with a generic height and width
     const initialLayout = {
       x: window.screenLeft,
@@ -31,7 +32,8 @@ export default () => {
     };
     // Newly created popup requested by user, so needs to be assigned an id
     currentId += 1;
-    createPopup(currentId, initialLayout, getIsNoopener());
+    addPopup(currentId, stockName);
+    createPopup(currentId, stockName, initialLayout, getIsNoopener());
   };
 
   const handleDismissPopups = () => {
@@ -39,33 +41,25 @@ export default () => {
     messageBroadcaster.port.postMessage(message);
   };
 
-  const dismissPopupsButtonEl = document.createElement("button");
-  document.body.appendChild(dismissPopupsButtonEl);
-  dismissPopupsButtonEl.innerText = "Dismiss all popups";
-  dismissPopupsButtonEl.addEventListener("click", () => {
-    handleDismissPopups();
-    // Pressing the button should remove the popups from the store
-    removeAllPopupsFromStorage();
-  });
+  document
+    .getElementById("dismiss-all-popups")
+    .addEventListener("click", () => {
+      handleDismissPopups();
+      // Pressing the button should remove the popups from the store
+      removeAllPopupsFromStorage();
+    });
 
   document.writeln("<br /><br />");
 
   // Closing the container page should dismiss the popups, but retain them in local storage
   window.addEventListener("beforeunload", handleDismissPopups);
 
-  const createNewPopupButtonEl = document.createElement("button");
-  document.body.appendChild(createNewPopupButtonEl);
-  createNewPopupButtonEl.innerText = "Create new popup";
-  createNewPopupButtonEl.addEventListener("click", handleCreatePopup);
+  document.querySelectorAll(".open-popup-btn").forEach(el => {
+    const stockName = el.getAttribute("data-stock");
+    el.addEventListener("click", () => handleCreatePopup(stockName));
+  });
 
-  const labelEl = document.createElement("label");
-  document.body.appendChild(labelEl);
-  labelEl.innerText = "Use noopener";
-
-  const checkboxEl = document.createElement("input");
-  document.body.appendChild(checkboxEl);
-  checkboxEl.type = "checkbox";
-  checkboxEl.checked = getIsNoopener();
+  const checkboxEl = document.getElementById("noopener-checkbox");
   checkboxEl.addEventListener("change", () => {
     setIsNoopener(checkboxEl.checked);
   });

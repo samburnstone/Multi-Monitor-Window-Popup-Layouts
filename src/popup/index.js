@@ -5,14 +5,14 @@ import {
   createPopupDismissedMessage,
   MESSAGE_TYPES
 } from "message-broadcaster/messageFactory";
-import "./chart"; // Import the chart file so it gets bundled by webpack
+import createChart from "./chart"; // Import the chart file so it gets bundled by webpack
 
 const params = queryString.parse(window.location.search);
-const { id } = params;
+const { id, stockName } = params;
 
 let isBeingClosedByWindow = false;
 
-window.document.title = `Stock ${id}`;
+window.document.title = stockName;
 
 const messageBroadcaster = createMessageBroadcaster();
 
@@ -58,3 +58,5 @@ window.addEventListener("beforeunload", () => {
   const message = createPopupDismissedMessage(id);
   messageBroadcaster.port.postMessage(message);
 });
+
+createChart(stockName);

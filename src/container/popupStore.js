@@ -12,20 +12,26 @@ export const removeAllPopupsFromStorage = () =>
 
 const messageBroadcaster = createMessageBroadcaster();
 
+export const addPopup = (id, stockName) => {
+  const popups = getPopupsFromStorage();
+  popups.push({ id, stockName });
+  localStorage.setItem(LAYOUT_STORAGE_KEY, JSON.stringify(popups));
+};
+
 export const startListeningForLayoutChanges = () => {
   messageBroadcaster.port.onmessage = event => {
     if (event.data.type === MESSAGE_TYPES.POPUP_LAYOUT_CHANGE) {
       const popup = event.data.payload;
       const popups = getPopupsFromStorage();
-      const currentIndex = popups.findIndex(({ id }) => id === popup.id);
+      const currentIndex = popups.findIndex(
+        ({ id }) => id === Number(popup.id)
+      );
 
-      if (currentIndex === -1) {
-        // Don't currently have this item, so add it to end of array
-        popups.push(popup);
-      } else {
-        // Need to replace existing item in storage
-        popups[currentIndex] = popup;
-      }
+      // Need to replace existing item in storage
+      popups[currentIndex] = {
+        ...popups[currentIndex],
+        layout: popup.layout
+      };
 
       localStorage.setItem(LAYOUT_STORAGE_KEY, JSON.stringify(popups));
     }
@@ -33,7 +39,7 @@ export const startListeningForLayoutChanges = () => {
     if (event.data.type === MESSAGE_TYPES.POPUP_DISMISSED) {
       const { id: popupId } = event.data.payload;
       const popups = getPopupsFromStorage();
-      const currentIndex = popups.findIndex(({ id }) => id === popupId);
+      const currentIndex = popups.findIndex(({ id }) => id === Number(popupId));
 
       if (currentIndex === -1) {
         return;

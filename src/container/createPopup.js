@@ -1,4 +1,4 @@
-export default async (id, layout, isNoopener) => {
+export default async (id, stockName, layout, isNoopener) => {
   const windowFeatures = ["resizable"];
 
   if (isNoopener) {
@@ -13,7 +13,7 @@ export default async (id, layout, isNoopener) => {
   );
 
   window.open(
-    `../popup.html?id=${id}&layout=${layout.x},${layout.y},${layout.width},${layout.height}`,
+    `../popup.html?id=${id}&layout=${layout.x},${layout.y},${layout.width},${layout.height}&stockName=${stockName}`,
     id,
     windowFeatures.join(",")
   );
