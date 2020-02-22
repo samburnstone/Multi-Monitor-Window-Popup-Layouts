@@ -12,7 +12,13 @@ module.exports = {
     filename: "[name].js",
     path: path.resolve(__dirname, "dist")
   },
-  plugins: [new CopyPlugin([{ from: "./*.html" }]), new WorkerPlugin()],
+  plugins: [
+    new CopyPlugin([
+      { from: "./*.html" },
+      { from: "./stock-data", to: "stock-data" }
+    ]),
+    new WorkerPlugin()
+  ],
   resolve: {
     alias: {
       "message-broadcaster": path.resolve(
