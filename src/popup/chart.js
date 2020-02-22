@@ -4,6 +4,8 @@ import * as fc from "d3fc";
 
 const data = fc.randomFinancial()(50);
 
+console.log(data);
+
 const yExtent = fc.extentLinear().accessors([d => d.high, d => d.low]);
 
 const xExtent = fc.extentDate().accessors([d => d.date]);

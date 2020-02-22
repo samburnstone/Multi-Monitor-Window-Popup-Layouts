@@ -15,7 +15,10 @@ module.exports = {
   plugins: [new CopyPlugin([{ from: "./*.html" }]), new WorkerPlugin()],
   resolve: {
     alias: {
-      "message-bus": path.resolve(__dirname, "./src/message-bus")
+      "message-broadcaster": path.resolve(
+        __dirname,
+        "./src/message-broadcaster"
+      )
     },
     modules: [path.resolve(__dirname, "node_modules")]
   },

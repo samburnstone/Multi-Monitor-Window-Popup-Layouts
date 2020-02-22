@@ -1,10 +1,10 @@
 import queryString from "query-string";
-import createMessageBus from "message-bus";
+import createMessageBroadcaster from "message-broadcaster";
 import {
   createPopupLayoutChangeMessage,
   createPopupDismissedMessage,
   MESSAGE_TYPES
-} from "message-bus/messageFactory";
+} from "message-broadcaster/messageFactory";
 import "./chart"; // Import the chart file so it gets bundled by webpack
 
 const params = queryString.parse(window.location.search);
@@ -14,7 +14,7 @@ let isBeingClosedByWindow = false;
 
 window.document.title = `Stock ${id}`;
 
-const messageBus = createMessageBus();
+const messageBroadcaster = createMessageBroadcaster();
 
 // Report the current layout every 0.5 seconds
 const startReportingLayout = () => {
@@ -28,11 +28,11 @@ const startReportingLayout = () => {
 
     const message = createPopupLayoutChangeMessage(id, currentLayout);
 
-    messageBus.port.postMessage(message);
+    messageBroadcaster.port.postMessage(message);
   }, 500);
 };
 
-messageBus.port.onmessage = ({ data }) => {
+messageBroadcaster.port.onmessage = ({ data }) => {
   if (data.type === MESSAGE_TYPES.POPUP_DISMISS_ALL) {
     isBeingClosedByWindow = true;
     window.close();
@@ -56,5 +56,5 @@ window.addEventListener("beforeunload", () => {
     return;
   }
   const message = createPopupDismissedMessage(id);
-  messageBus.port.postMessage(message);
+  messageBroadcaster.port.postMessage(message);
 });

@@ -1,5 +1,5 @@
-import { createDismissAllPopupsMessage } from "message-bus/messageFactory";
-import createMessageBus from "message-bus";
+import { createDismissAllPopupsMessage } from "message-broadcaster/messageFactory";
+import createMessageBroadcaster from "message-broadcaster";
 import createPopup from "./createPopup";
 import {
   getPopupsFromStorage,
@@ -11,7 +11,7 @@ import { getIsNoopener, setIsNoopener } from "./noopenerStore";
 export default () => {
   let currentId = 0;
 
-  const messageBus = createMessageBus();
+  const messageBroadcaster = createMessageBroadcaster();
 
   window.addEventListener("load", async () => {
     for (const { id, layout } of getPopupsFromStorage()) {
@@ -36,7 +36,7 @@ export default () => {
 
   const handleDismissPopups = () => {
     const message = createDismissAllPopupsMessage();
-    messageBus.port.postMessage(message);
+    messageBroadcaster.port.postMessage(message);
   };
 
   const dismissPopupsButtonEl = document.createElement("button");

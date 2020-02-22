@@ -1,5 +1,5 @@
-import createMessageBus from "message-bus";
-import { MESSAGE_TYPES } from "message-bus/messageFactory";
+import createMessageBroadcaster from "message-broadcaster";
+import { MESSAGE_TYPES } from "message-broadcaster/messageFactory";
 
 const LAYOUT_STORAGE_KEY = "F3DC/popups";
 
@@ -10,10 +10,10 @@ export const getPopupsFromStorage = () =>
 export const removeAllPopupsFromStorage = () =>
   localStorage.setItem(LAYOUT_STORAGE_KEY, JSON.stringify([]));
 
-const messageBus = createMessageBus();
+const messageBroadcaster = createMessageBroadcaster();
 
 export const startListeningForLayoutChanges = () => {
-  messageBus.port.onmessage = event => {
+  messageBroadcaster.port.onmessage = event => {
     if (event.data.type === MESSAGE_TYPES.POPUP_LAYOUT_CHANGE) {
       const popup = event.data.payload;
       const popups = getPopupsFromStorage();
