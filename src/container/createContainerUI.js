@@ -60,6 +60,7 @@ export default () => {
   });
 
   const checkboxEl = document.getElementById("noopener-checkbox");
+  checkboxEl.checked = getIsNoopener();
   checkboxEl.addEventListener("change", () => {
     setIsNoopener(checkboxEl.checked);
   });
