@@ -13,10 +13,9 @@ export default async (id, stockName, layout, isNoopener) => {
   );
 
   const { origin, pathname } = window.location;
-  const baseUrl = `${origin}${pathname === "/" ? "" : pathname}`;
 
   window.open(
-    `${baseUrl}/popup.html?id=${id}&layout=${layout.x},${layout.y},${layout.width},${layout.height}&stockName=${stockName}`,
+    `${origin}${pathname}popup.html?id=${id}&layout=${layout.x},${layout.y},${layout.width},${layout.height}&stockName=${stockName}`,
     id,
     windowFeatures.join(",")
   );
