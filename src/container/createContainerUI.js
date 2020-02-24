@@ -49,8 +49,6 @@ export default () => {
       removeAllPopupsFromStorage();
     });
 
-  document.writeln("<br /><br />");
-
   // Closing the container page should dismiss the popups, but retain them in local storage
   window.addEventListener("beforeunload", handleDismissPopups);
 
