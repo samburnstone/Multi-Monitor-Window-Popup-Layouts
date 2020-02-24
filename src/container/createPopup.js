@@ -13,7 +13,7 @@ export default async (id, stockName, layout, isNoopener) => {
   );
 
   window.open(
-    `../popup.html?id=${id}&layout=${layout.x},${layout.y},${layout.width},${layout.height}&stockName=${stockName}`,
+    `/popup.html?id=${id}&layout=${layout.x},${layout.y},${layout.width},${layout.height}&stockName=${stockName}`,
     id,
     windowFeatures.join(",")
   );
