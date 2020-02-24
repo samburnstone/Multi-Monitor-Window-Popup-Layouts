@@ -1,0 +1,36 @@
+name: Deploy to Github Pages
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-node@v1
+      with:
+        node-version: '12.x'
+    - name: Install and compile app
+      run: |
+        npm install yarn -g
+        yarn install
+        yarn build
+    - name: Deploy to Github Pages
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git checkout --orphan gh-pages
+        git reset
+        git add dist/* -f
+        git mv dist/* ./ -k
+        git commit -m "Update files hosted on Github Pages"
+    - uses: ad-m/github-push-action@master
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        force: true
+        branch: gh-pages
