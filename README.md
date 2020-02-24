@@ -14,3 +14,12 @@ Requirements:
 - Install dependencies using `yarn install`
 
 Run `yarn start` and open `localhost:8080`
+
+## Deploying to Github Pages
+
+There's almost certainly a better way to do this, but for now deployment is done as follows:
+
+1. Checkout `gh-pages-deploy` branch
+2. Merge in `master`
+3. Run `yarn gh-publish`
+4. That should be it
