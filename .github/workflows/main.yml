@@ -25,9 +25,10 @@ jobs:
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
         git checkout --orphan gh-pages
+        ls | grep -v dist | xargs rm -rf
         git reset
         git add dist/* -f
-        git mv dist/* ./ -k
+        git mv dist/* ./
         git commit -m "Update files hosted on Github Pages"
     - uses: ad-m/github-push-action@master
       with:
