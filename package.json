@@ -3,7 +3,8 @@
   "scripts": {
     "build": "rimraf dist && webpack",
     "start": "webpack-dev-server --open",
-    "lint": "eslint src/**/*.js"
+    "lint": "eslint src/**/*.js",
+    "gh-publish": "yarn build && git add ./dist && git commit -m \"Update dist\" && git subtree push --prefix dist origin gh-pages"
   },
   "husky": {
     "hooks": {
