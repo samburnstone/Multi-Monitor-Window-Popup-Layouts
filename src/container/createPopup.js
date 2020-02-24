@@ -12,8 +12,11 @@ export default async (id, stockName, layout, isNoopener) => {
     `height=${layout.height}`
   );
 
+  const { origin, pathname } = window.location;
+  const baseUrl = `${origin}${pathname === "/" ? "" : pathname}`;
+
   window.open(
-    `/popup.html?id=${id}&layout=${layout.x},${layout.y},${layout.width},${layout.height}&stockName=${stockName}`,
+    `${baseUrl}/popup.html?id=${id}&layout=${layout.x},${layout.y},${layout.width},${layout.height}&stockName=${stockName}`,
     id,
     windowFeatures.join(",")
   );
