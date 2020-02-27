@@ -22,8 +22,8 @@ const startReportingLayout = () => {
     const currentLayout = {
       x: window.screenLeft,
       y: window.screenY,
-      width: window.outerWidth,
-      height: window.outerHeight
+      width: window.innerWidth,
+      height: window.innerHeight
     };
 
     const message = createPopupLayoutChangeMessage(id, currentLayout);
@@ -47,8 +47,17 @@ document.addEventListener("DOMContentLoaded", () => {
     // Chrome does not respect dimensions supplied via window features, so we do a
     // hacky user agent check to determine whether we need to do some resizing & repositioning
 
+    // resizeTo expects width and height in terms of "outerWidth" and "outerHeight".
+    // layout is stored in terms of pop-up's "innerWidth" and "innerHeight", so need to do
+    // some adjustments to ensure content area is of correct size
+    const widthDiff = window.outerWidth - window.innerWidth;
+    const heightDiff = window.outerHeight - window.innerHeight;
+
     // Layout params are sent in format "<x>,<y>,<width>,<height>" via the query string
-    window.resizeTo(initialLayout[2], initialLayout[3]);
+    window.resizeTo(
+      initialLayout[2] + widthDiff,
+      initialLayout[3] + heightDiff
+    );
     // Need to move after resizing, otherwise y will always be 0 for some reason!
     window.moveTo(initialLayout[0], initialLayout[1]);
   }
