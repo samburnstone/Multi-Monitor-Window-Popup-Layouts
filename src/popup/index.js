@@ -41,11 +41,18 @@ messageBroadcaster.port.onmessage = ({ data }) => {
 
 // Can't resize the document straight away - waiting until this event fires seems to work
 document.addEventListener("DOMContentLoaded", () => {
-  // Layout is sent in format "<x>,<y>,<width>,<height>"
   const initialLayout = params.layout.split(",");
-  window.resizeTo(initialLayout[2], initialLayout[3]);
-  // Need to move after resizing, otherwise y will always be 0 for some reason!
-  window.moveTo(initialLayout[0], initialLayout[1]);
+
+  if (navigator.userAgent.search("Chrome") > 0) {
+    // Chrome does not respect dimensions supplied via window features, so we do a
+    // hacky user agent check to determine whether we need to do some resizing & repositioning
+
+    // Layout params are sent in format "<x>,<y>,<width>,<height>" via the query string
+    window.resizeTo(initialLayout[2], initialLayout[3]);
+    // Need to move after resizing, otherwise y will always be 0 for some reason!
+    window.moveTo(initialLayout[0], initialLayout[1]);
+  }
+
   startReportingLayout();
 });
 
