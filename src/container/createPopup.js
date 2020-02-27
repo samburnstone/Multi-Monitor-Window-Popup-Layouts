@@ -7,7 +7,7 @@ export default async (id, stockName, layout, isNoopener) => {
 
   windowFeatures.push(
     `left=${layout.x}`,
-    `top=${layout.top}`,
+    `top=${layout.y}`,
     `width=${layout.width}`,
     `height=${layout.height}`
   );
