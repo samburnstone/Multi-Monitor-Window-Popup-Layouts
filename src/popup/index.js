@@ -41,7 +41,7 @@ messageBroadcaster.port.onmessage = ({ data }) => {
 
 // Can't resize the document straight away - waiting until this event fires seems to work
 document.addEventListener("DOMContentLoaded", () => {
-  const initialLayout = params.layout.split(",");
+  const initialLayout = params.layout.split(",").map(Number);
 
   if (navigator.userAgent.search("Chrome") > 0) {
     // Chrome does not respect dimensions supplied via window features, so we do a
