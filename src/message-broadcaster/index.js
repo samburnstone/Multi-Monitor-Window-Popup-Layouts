@@ -1,7 +1,26 @@
+// Currently using SharedWorkers for cross-window communication.
+// Present warning alert if using a browser that doesn't support this feature.
 if (!window.SharedWorker) {
-  alert(
-    "Looks like you're using a browser that doesn't support SharedWorkers.\n\nPlease try this in another browser."
-  );
+  const POP_UP_SEEN_KEY = "F3DC/hasSeenSharedWorkerWarning";
+
+  const hasSeenAlert = localStorage.getItem(POP_UP_SEEN_KEY) === "true";
+
+  if (!hasSeenAlert) {
+    alert(
+      "Looks like you're using a browser that doesn't support SharedWorkers.\n\nThings will still work to some extent, but you may be better off using another browser."
+    );
+
+    localStorage.setItem(POP_UP_SEEN_KEY, "true");
+  }
+
+  window.SharedWorker = function() {
+    return {
+      port: {
+        postMessage: () => {},
+        onmessage: () => {}
+      }
+    };
+  };
 }
 
 export default () =>
