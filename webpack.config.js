@@ -1,5 +1,6 @@
 const CopyPlugin = require("copy-webpack-plugin");
 const WorkerPlugin = require("worker-plugin-shared");
+const WorkboxPlugin = require("workbox-webpack-plugin");
 const path = require("path");
 
 module.exports = {
@@ -17,7 +18,8 @@ module.exports = {
       { from: "./*.html" },
       { from: "./stock-data", to: "stock-data" }
     ]),
-    new WorkerPlugin()
+    new WorkerPlugin(),
+    new WorkboxPlugin.GenerateSW()
   ],
   resolve: {
     alias: {

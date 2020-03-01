@@ -26,6 +26,7 @@
     "webpack": "^4.41.5",
     "webpack-cli": "^3.3.10",
     "webpack-dev-server": "^3.10.1",
+    "workbox-webpack-plugin": "^5.0.0",
     "worker-plugin-shared": "^3.2.1"
   },
   "dependencies": {

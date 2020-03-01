@@ -7,3 +7,9 @@ if (testPopupsEnabled()) {
   const popupAlertEl = document.getElementById("popups-disabled-alert");
   popupAlertEl.classList.remove("d-none");
 }
+
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("/service-worker.js");
+  });
+}
