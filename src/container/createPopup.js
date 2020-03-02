@@ -1,3 +1,5 @@
+import getBaseUrl from "./utils/getBaseUrl";
+
 export default async (id, stockName, layout, isNoopener) => {
   const windowFeatures = ["resizable"];
 
@@ -12,10 +14,10 @@ export default async (id, stockName, layout, isNoopener) => {
     `height=${layout.height}`
   );
 
-  const { origin, pathname } = window.location;
-
   window.open(
-    `${origin}${pathname}popup.html?id=${id}&layout=${layout.x},${layout.y},${layout.width},${layout.height}&stockName=${stockName}`,
+    `${getBaseUrl()}popup.html?id=${id}&layout=${layout.x},${layout.y},${
+      layout.width
+    },${layout.height}&stockName=${stockName}`,
     id,
     windowFeatures.join(",")
   );

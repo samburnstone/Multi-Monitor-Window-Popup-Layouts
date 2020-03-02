@@ -16,7 +16,8 @@ module.exports = {
   plugins: [
     new CopyPlugin([
       { from: "./*.html" },
-      { from: "./stock-data", to: "stock-data" }
+      { from: "./stock-data", to: "stock-data" },
+      { from: "./manifest.json" }
     ]),
     new WorkerPlugin(),
     new WorkboxPlugin.GenerateSW()

@@ -1,5 +1,6 @@
 {
-  "short_name": "Multi-Window Popup Layouts",
+  "short_name": "Multi-Window Test",
+  "name": "Multi-Window Test",
   "description": "Test project for determining browser support for multi-window applications",
   "icons": [
     {
@@ -33,9 +34,7 @@
       "type": "image/png"
     }
   ],
-  "start_url": "/",
   "background_color": "#FFFFFF",
   "display": "standalone",
-  "scope": "/",
   "theme_color": "#FFFFFF"
 }
