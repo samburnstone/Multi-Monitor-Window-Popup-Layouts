@@ -30,6 +30,7 @@
     "worker-plugin-shared": "^3.2.1"
   },
   "dependencies": {
+    "bootstrap": "^4.4.1",
     "d3": "^5.15.0",
     "d3fc": "^14.1.30",
     "query-string": "^6.11.0"

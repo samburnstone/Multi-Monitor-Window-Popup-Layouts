@@ -17,7 +17,8 @@ module.exports = {
     new CopyPlugin([
       { from: "./*.html" },
       { from: "./stock-data", to: "stock-data" },
-      { from: "./manifest.json" }
+      { from: "./manifest.json" },
+      { from: "./node_modules/bootstrap/dist/css/bootstrap.min.css" }
     ]),
     new WorkerPlugin(),
     new WorkboxPlugin.GenerateSW()
