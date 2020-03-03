@@ -16,7 +16,7 @@ module.exports = {
   plugins: [
     new CopyPlugin([
       { from: "./*.html" },
-      { from: "./stock-data", to: "stock-data" },
+      { from: "./assets", to: "assets" },
       { from: "./manifest.json" },
       { from: "./node_modules/bootstrap/dist/css/bootstrap.min.css" }
     ]),
