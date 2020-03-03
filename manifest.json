@@ -36,5 +36,6 @@
   ],
   "background_color": "#FFFFFF",
   "display": "standalone",
-  "theme_color": "#007bff"
+  "theme_color": "#007bff",
+  "start_url": "https://samburnstone.github.io/Multi-Monitor-Window-Popup-Layouts/"
 }
