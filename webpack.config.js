@@ -18,7 +18,8 @@ module.exports = {
       { from: "./*.html" },
       { from: "./assets", to: "assets" },
       { from: "./manifest.json" },
-      { from: "./node_modules/bootstrap/dist/css/bootstrap.min.css" }
+      { from: "./node_modules/bootstrap/dist/css/bootstrap.min.css" },
+      { from: "./node_modules/bootstrap/dist/css/bootstrap.min.css.map" }
     ]),
     new WorkerPlugin(),
     new WorkboxPlugin.GenerateSW()
