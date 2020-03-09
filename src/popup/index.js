@@ -32,8 +32,8 @@ const startReportingLayout = () => {
   }, 500);
 };
 
-messageBroadcaster.onmessage = ({ data }) => {
-  if (data.type === MESSAGE_TYPES.POPUP_DISMISS_ALL) {
+messageBroadcaster.onmessage = event => {
+  if (event.type === MESSAGE_TYPES.POPUP_DISMISS_ALL) {
     isBeingClosedByWindow = true;
     window.close();
   }
