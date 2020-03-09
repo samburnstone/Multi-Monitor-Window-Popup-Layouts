@@ -1,10 +1,10 @@
 import queryString from "query-string";
-import createMessageBroadcaster from "message-broadcaster";
 import {
+  createMessageBroadcaster,
   createPopupLayoutChangeMessage,
   createPopupDismissedMessage,
   MESSAGE_TYPES
-} from "message-broadcaster/messageFactory";
+} from "message-broadcaster";
 import createChart from "./chart"; // Import the chart file so it gets bundled by webpack
 
 const params = queryString.parse(window.location.search);
@@ -28,11 +28,11 @@ const startReportingLayout = () => {
 
     const message = createPopupLayoutChangeMessage(id, currentLayout);
 
-    messageBroadcaster.port.postMessage(message);
+    messageBroadcaster.postMessage(message);
   }, 500);
 };
 
-messageBroadcaster.port.onmessage = ({ data }) => {
+messageBroadcaster.onmessage = ({ data }) => {
   if (data.type === MESSAGE_TYPES.POPUP_DISMISS_ALL) {
     isBeingClosedByWindow = true;
     window.close();
@@ -72,7 +72,7 @@ window.addEventListener("beforeunload", () => {
     return;
   }
   const message = createPopupDismissedMessage(id);
-  messageBroadcaster.port.postMessage(message);
+  messageBroadcaster.postMessage(message);
 });
 
 createChart(stockName);

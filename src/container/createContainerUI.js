@@ -1,5 +1,7 @@
-import { createDismissAllPopupsMessage } from "message-broadcaster/messageFactory";
-import createMessageBroadcaster from "message-broadcaster";
+import {
+  createMessageBroadcaster,
+  createDismissAllPopupsMessage
+} from "message-broadcaster";
 import createPopup from "./createPopup";
 import {
   addPopup,
@@ -38,7 +40,7 @@ export default () => {
 
   const handleDismissPopups = () => {
     const message = createDismissAllPopupsMessage();
-    messageBroadcaster.port.postMessage(message);
+    messageBroadcaster.postMessage(message);
   };
 
   document

@@ -1,5 +1,4 @@
-import createMessageBroadcaster from "message-broadcaster";
-import { MESSAGE_TYPES } from "message-broadcaster/messageFactory";
+import { createMessageBroadcaster, MESSAGE_TYPES } from "message-broadcaster";
 
 const LAYOUT_STORAGE_KEY = "F3DC/popups";
 
@@ -19,9 +18,9 @@ export const addPopup = (id, stockName) => {
 };
 
 export const startListeningForLayoutChanges = () => {
-  messageBroadcaster.port.onmessage = event => {
-    if (event.data.type === MESSAGE_TYPES.POPUP_LAYOUT_CHANGE) {
-      const popup = event.data.payload;
+  messageBroadcaster.onmessage = event => {
+    if (event.type === MESSAGE_TYPES.POPUP_LAYOUT_CHANGE) {
+      const popup = event.payload;
       const popups = getPopupsFromStorage();
       const currentIndex = popups.findIndex(
         ({ id }) => id === Number(popup.id)
@@ -36,8 +35,8 @@ export const startListeningForLayoutChanges = () => {
       localStorage.setItem(LAYOUT_STORAGE_KEY, JSON.stringify(popups));
     }
 
-    if (event.data.type === MESSAGE_TYPES.POPUP_DISMISSED) {
-      const { id: popupId } = event.data.payload;
+    if (event.type === MESSAGE_TYPES.POPUP_DISMISSED) {
+      const { id: popupId } = event.payload;
       const popups = getPopupsFromStorage();
       const currentIndex = popups.findIndex(({ id }) => id === Number(popupId));
 

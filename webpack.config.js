@@ -1,5 +1,4 @@
 const CopyPlugin = require("copy-webpack-plugin");
-const WorkerPlugin = require("worker-plugin-shared");
 const WorkboxPlugin = require("workbox-webpack-plugin");
 const path = require("path");
 
@@ -21,7 +20,6 @@ module.exports = {
       { from: "./node_modules/bootstrap/dist/css/bootstrap.min.css" },
       { from: "./node_modules/bootstrap/dist/css/bootstrap.min.css.map" }
     ]),
-    new WorkerPlugin(),
     new WorkboxPlugin.GenerateSW()
   ],
   resolve: {

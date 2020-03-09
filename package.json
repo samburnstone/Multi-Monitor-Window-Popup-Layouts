@@ -26,11 +26,11 @@
     "webpack": "^4.41.5",
     "webpack-cli": "^3.3.10",
     "webpack-dev-server": "^3.10.1",
-    "workbox-webpack-plugin": "^5.0.0",
-    "worker-plugin-shared": "^3.2.1"
+    "workbox-webpack-plugin": "^5.0.0"
   },
   "dependencies": {
     "bootstrap": "^4.4.1",
+    "broadcast-channel": "^3.1.0",
     "d3": "^5.15.0",
     "d3fc": "^14.1.30",
     "query-string": "^6.11.0"
