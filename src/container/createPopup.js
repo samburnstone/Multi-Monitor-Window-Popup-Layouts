@@ -1,5 +1,3 @@
-import getBaseUrl from "./utils/getBaseUrl";
-
 export default async (id, stockName, layout, isNoopener) => {
   const windowFeatures = ["resizable"];
 
@@ -15,9 +13,7 @@ export default async (id, stockName, layout, isNoopener) => {
   );
 
   window.open(
-    `${getBaseUrl()}popup-host.html?id=${id}&layout=${layout.x},${layout.y},${
-      layout.width
-    },${layout.height}&stockName=${stockName}`,
+    `./popup-host.html?id=${id}&layout=${layout.x},${layout.y},${layout.width},${layout.height}&stockName=${stockName}`,
     id,
     windowFeatures.join(",")
   );

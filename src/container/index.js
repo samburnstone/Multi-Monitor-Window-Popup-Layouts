@@ -1,6 +1,5 @@
 import testPopupsEnabled from "./testPopupsEnabled";
 import createContainerUI from "./createContainerUI";
-import getBaseUrl from "./utils/getBaseUrl";
 
 if (testPopupsEnabled()) {
   createContainerUI();
@@ -11,6 +10,6 @@ if (testPopupsEnabled()) {
 
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", () => {
-    navigator.serviceWorker.register(`${getBaseUrl()}service-worker.js`);
+    navigator.serviceWorker.register("./service-worker.js");
   });
 }
