@@ -28,4 +28,4 @@ export const createPopupDismissedMessage = id => ({
 });
 
 export const createMessageBroadcaster = () =>
-  new BroadcastChannel(BROADCAST_CHANNEL_NAME);
+  new BroadcastChannel(BROADCAST_CHANNEL_NAME, { webWorkerSupport: false });
