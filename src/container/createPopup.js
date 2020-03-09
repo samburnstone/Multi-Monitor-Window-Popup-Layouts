@@ -15,7 +15,7 @@ export default async (id, stockName, layout, isNoopener) => {
   );
 
   window.open(
-    `${getBaseUrl()}popup.html?id=${id}&layout=${layout.x},${layout.y},${
+    `${getBaseUrl()}popup-host.html?id=${id}&layout=${layout.x},${layout.y},${
       layout.width
     },${layout.height}&stockName=${stockName}`,
     id,

@@ -1,5 +1,5 @@
 export default () => {
-  const testPopup = window.open("./popup.html", null);
+  const testPopup = window.open("./popups-enabled.html", null);
   if (testPopup) {
     testPopup.close();
     return true;
