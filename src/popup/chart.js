@@ -48,6 +48,12 @@ export default (stockName, onCrosshairPositionChange) =>
         .svgPlotArea(multi);
 
       const snapCrosshairToClosestDataPoint = xValue => {
+        if (!xValue) {
+          // Hide crosshair if value undefined
+          crosshairData = [];
+          return;
+        }
+
         const closestDataPoint = closest(data, d =>
           Math.abs(xValue - d.date.getTime())
         );
@@ -76,6 +82,8 @@ export default (stockName, onCrosshairPositionChange) =>
           .call(pointer)
           .on("mouseout", () => {
             crosshairData = [];
+            // Undefined indicates crosshair should be hidden
+            onCrosshairPositionChange();
           });
       };
 
