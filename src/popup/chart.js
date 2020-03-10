@@ -13,7 +13,7 @@ export default (stockName, onCrosshairPositionChange) =>
       volume: Number(d.Volume)
     }))
     .then(data => {
-      let crosshairData = [];
+      let annotationData = [];
 
       // Now we can create the chart (from: https://d3fc.io/introduction/getting-started.html)
       const yExtent = fc.extentLinear().accessors([d => d.high, d => d.low]);
@@ -25,18 +25,18 @@ export default (stockName, onCrosshairPositionChange) =>
 
       const gridlines = fc.annotationSvgGridline();
       const candlestick = fc.seriesSvgCandlestick();
-      const crosshair = fc
-        .annotationSvgCrosshair()
-        .x(d => xScale(d.date))
-        .y(d => yScale(d.close))
-        .xLabel(d => `Close: ${d.close}`);
+      const annotation = fc
+        .annotationSvgLine()
+        .orient("vertical")
+        .value(d => d.date)
+        .label("");
 
       const multi = fc
         .seriesSvgMulti()
-        .series([gridlines, candlestick, crosshair])
+        .series([gridlines, candlestick, annotation])
         .mapping((seriesData, index, series) => {
-          if (series[index] === crosshair) {
-            return crosshairData;
+          if (series[index] === annotation) {
+            return annotationData;
           }
           return seriesData;
         });
@@ -49,8 +49,8 @@ export default (stockName, onCrosshairPositionChange) =>
 
       const snapCrosshairToClosestDataPoint = xValue => {
         if (!xValue) {
-          // Hide crosshair if value undefined
-          crosshairData = [];
+          // Hide annotation if value undefined
+          annotationData = [];
           return;
         }
 
@@ -58,7 +58,7 @@ export default (stockName, onCrosshairPositionChange) =>
           Math.abs(xValue - d.date.getTime())
         );
 
-        crosshairData = [closestDataPoint];
+        annotationData = [closestDataPoint];
       };
 
       const render = () => {
@@ -72,8 +72,8 @@ export default (stockName, onCrosshairPositionChange) =>
 
             snapCrosshairToClosestDataPoint(pointerXValue);
 
-            // Inform callback that crosshair position has changed
-            onCrosshairPositionChange(crosshairData[0].date);
+            // Inform callback that annotation position has changed
+            onCrosshairPositionChange(annotationData[0].date);
           });
           render();
         });
@@ -81,8 +81,8 @@ export default (stockName, onCrosshairPositionChange) =>
         d3.select("#chart .plot-area")
           .call(pointer)
           .on("mouseout", () => {
-            crosshairData = [];
-            // Undefined indicates crosshair should be hidden
+            annotationData = [];
+            // Undefined indicates annotation should be hidden
             onCrosshairPositionChange();
           });
       };
