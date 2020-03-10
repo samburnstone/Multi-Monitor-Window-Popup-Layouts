@@ -3,76 +3,86 @@ import {
   createMessageBroadcaster,
   createPopupLayoutChangeMessage,
   createPopupDismissedMessage,
+  createCrosshairPositionChangeMessage,
   MESSAGE_TYPES
 } from "message-broadcaster";
 import createChart from "./chart"; // Import the chart file so it gets bundled by webpack
 
-const params = queryString.parse(window.location.search);
-const { id, stockName } = params;
+(async () => {
+  const params = queryString.parse(window.location.search);
+  const { id, stockName } = params;
 
-let isBeingClosedByWindow = false;
+  let isBeingClosedByWindow = false;
 
-window.document.title = stockName;
+  window.document.title = stockName;
 
-const messageBroadcaster = createMessageBroadcaster();
+  const messageBroadcaster = createMessageBroadcaster();
 
-// Report the current layout every 0.5 seconds
-const startReportingLayout = () => {
-  setInterval(() => {
-    const currentLayout = {
-      x: window.screenLeft,
-      y: window.screenY,
-      width: window.innerWidth,
-      height: window.innerHeight
-    };
-
-    const message = createPopupLayoutChangeMessage(id, currentLayout);
-
+  const chart = await createChart(stockName, crosshairXValue => {
+    const message = createCrosshairPositionChangeMessage(crosshairXValue);
     messageBroadcaster.postMessage(message);
-  }, 500);
-};
+  });
 
-messageBroadcaster.onmessage = event => {
-  if (event.type === MESSAGE_TYPES.POPUP_DISMISS_ALL) {
-    isBeingClosedByWindow = true;
-    window.close();
-  }
-};
+  // Report the current layout every 0.5 seconds
+  const startReportingLayout = () => {
+    setInterval(() => {
+      const currentLayout = {
+        x: window.screenLeft,
+        y: window.screenY,
+        width: window.innerWidth,
+        height: window.innerHeight
+      };
 
-// Can't resize the document straight away - waiting until this event fires seems to work
-document.addEventListener("DOMContentLoaded", () => {
-  const initialLayout = params.layout.split(",").map(Number);
+      const message = createPopupLayoutChangeMessage(id, currentLayout);
 
-  if (navigator.userAgent.search("Chrome") > 0) {
-    // Chrome does not respect dimensions supplied via window features, so we do a
-    // hacky user agent check to determine whether we need to do some resizing & repositioning
+      messageBroadcaster.postMessage(message);
+    }, 500);
+  };
 
-    // resizeTo expects width and height in terms of "outerWidth" and "outerHeight".
-    // layout is stored in terms of pop-up's "innerWidth" and "innerHeight", so need to do
-    // some adjustments to ensure content area is of correct size
-    const widthDiff = window.outerWidth - window.innerWidth;
-    const heightDiff = window.outerHeight - window.innerHeight;
+  messageBroadcaster.onmessage = event => {
+    if (event.type === MESSAGE_TYPES.POPUP_DISMISS_ALL) {
+      isBeingClosedByWindow = true;
+      window.close();
+    }
 
-    // Layout params are sent in format "<x>,<y>,<width>,<height>" via the query string
-    window.resizeTo(
-      initialLayout[2] + widthDiff,
-      initialLayout[3] + heightDiff
-    );
-    // Need to move after resizing, otherwise y will always be 0 for some reason!
-    window.moveTo(initialLayout[0], initialLayout[1]);
-  }
+    if (event.type === MESSAGE_TYPES.CROSSHAIR_POSITION_CHANGE) {
+      chart.updateCrosshairPosition(event.payload.position);
+    }
+  };
 
-  startReportingLayout();
-});
+  // Can't resize the document straight away - waiting until this event fires seems to work
+  document.addEventListener("DOMContentLoaded", () => {
+    const initialLayout = params.layout.split(",").map(Number);
 
-window.addEventListener("beforeunload", () => {
-  if (isBeingClosedByWindow) {
-    // If the close window instruction came from the container then don't send message,
-    // as the container already knows the popup's closing.
-    return;
-  }
-  const message = createPopupDismissedMessage(id);
-  messageBroadcaster.postMessage(message);
-});
+    if (navigator.userAgent.search("Chrome") > 0) {
+      // Chrome does not respect dimensions supplied via window features, so we do a
+      // hacky user agent check to determine whether we need to do some resizing & repositioning
 
-createChart(stockName);
+      // resizeTo expects width and height in terms of "outerWidth" and "outerHeight".
+      // layout is stored in terms of pop-up's "innerWidth" and "innerHeight", so need to do
+      // some adjustments to ensure content area is of correct size
+      const widthDiff = window.outerWidth - window.innerWidth;
+      const heightDiff = window.outerHeight - window.innerHeight;
+
+      // Layout params are sent in format "<x>,<y>,<width>,<height>" via the query string
+      window.resizeTo(
+        initialLayout[2] + widthDiff,
+        initialLayout[3] + heightDiff
+      );
+      // Need to move after resizing, otherwise y will always be 0 for some reason!
+      window.moveTo(initialLayout[0], initialLayout[1]);
+    }
+
+    startReportingLayout();
+  });
+
+  window.addEventListener("beforeunload", () => {
+    if (isBeingClosedByWindow) {
+      // If the close window instruction came from the container then don't send message,
+      // as the container already knows the popup's closing.
+      return;
+    }
+    const message = createPopupDismissedMessage(id);
+    messageBroadcaster.postMessage(message);
+  });
+})();
