@@ -11,6 +11,8 @@ export default stockName => {
     date: new Date(d.Date),
     volume: Number(d.Volume)
   })).then(data => {
+    let crosshairData = [];
+
     // Now we can create the chart (from: https://d3fc.io/introduction/getting-started.html)
     const yExtent = fc.extentLinear().accessors([d => d.high, d => d.low]);
 
@@ -21,7 +23,21 @@ export default stockName => {
 
     const gridlines = fc.annotationSvgGridline();
     const candlestick = fc.seriesSvgCandlestick();
-    const multi = fc.seriesSvgMulti().series([gridlines, candlestick]);
+    const crosshair = fc
+      .annotationSvgCrosshair()
+      .x(d => xScale(d.date))
+      .y(d => yScale(d.close))
+      .xLabel(d => `Close: ${d.close}`);
+
+    const multi = fc
+      .seriesSvgMulti()
+      .series([gridlines, candlestick, crosshair])
+      .mapping((seriesData, index, series) => {
+        if (series[index] === crosshair) {
+          return crosshairData;
+        }
+        return seriesData;
+      });
 
     const chart = fc
       .chartCartesian(xScale, yScale)
@@ -34,19 +50,16 @@ export default stockName => {
         .datum(data)
         .call(chart);
 
-      const pointer = fc.pointer().on("point", event =>
+      const pointer = fc.pointer().on("point", event => {
         event.forEach(position => {
-          const xPos = Math.abs(xScale.invert(position.x).getTime());
-
-          // TODO: send this xPos to other charts
-
-          const closestPoint = closest(data, d =>
-            Math.abs(xPos - d.date.getTime())
+          const closestDataPoint = closest(data, d =>
+            Math.abs(xScale.invert(position.x).getTime() - d.date.getTime())
           );
-          console.log(closestPoint);
-          return closestPoint;
-        })
-      );
+
+          crosshairData = [closestDataPoint];
+        });
+        render();
+      });
 
       d3.select("#chart .plot-area").call(pointer);
     };
