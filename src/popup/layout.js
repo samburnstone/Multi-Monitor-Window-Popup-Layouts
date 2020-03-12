@@ -25,9 +25,10 @@ export default (id, layout, messageBroadcaster) => {
 
   if (isChromium) {
     // Layout params are sent in format "<x>,<y>,<width>,<height>" via the query string
-    window.resizeTo(layout[2], layout[3]);
-    // Need to move after resizing, otherwise y will always be 0 for some reason!
-    window.moveTo(layout[0], layout[1]);
+    const [x, y, width, height] = layout;
+
+    window.resizeTo(width, height);
+    window.moveTo(x, y);
   }
 
   startReportingLayout();
