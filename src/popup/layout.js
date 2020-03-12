@@ -23,11 +23,17 @@ export default (id, layout, messageBroadcaster) => {
     // resizeTo expects width and height in terms of "outerWidth" and "outerHeight".
     // layout is stored in terms of pop-up's "innerWidth" and "innerHeight", so need to do
     // some adjustments to ensure content area is of correct size
-    const widthDiff = window.outerWidth - window.innerWidth;
-    const heightDiff = window.outerHeight - window.innerHeight;
+
+    // Hack: Chrome sometimes reports outerHeight as being less than innerHeight.
+    // Only saw this when running as Desktop PWA, in which case we know the height of the top bar
+    const pwaTopBarHeight = 38;
+    const heightDiff = Math.max(
+      window.outerHeight - window.innerHeight,
+      pwaTopBarHeight
+    );
 
     // Layout params are sent in format "<x>,<y>,<width>,<height>" via the query string
-    window.resizeTo(layout[2] + widthDiff, layout[3] + heightDiff);
+    window.resizeTo(layout[2], layout[3] + heightDiff);
     // Need to move after resizing, otherwise y will always be 0 for some reason!
     window.moveTo(layout[0], layout[1]);
   }
