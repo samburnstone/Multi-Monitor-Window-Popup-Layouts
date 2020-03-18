@@ -1,0 +1,76 @@
+<html>
+  <head>
+    <title>Multi-Window Experiment</title>
+    <link rel="stylesheet" href="./bootstrap.min.css" />
+    <link rel="manifest" href="./manifest.json" />
+    <link rel="apple-touch-icon" href="./assets/icons/icon-192x192.png" />
+    <meta name="theme-color" content="#317EFB" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+  </head>
+  <body>
+    <div class="container">
+      <div class="row" style="margin: 20px 0">
+        <div class="col-9">
+          <input
+            class="form-check-input"
+            type="checkbox"
+            id="noopener-checkbox"
+          />
+          <label class="form-check-label" for="noopener-checkbox">
+            Use noopener
+          </label>
+        </div>
+        <button id="dismiss-all-popups" class="btn btn-danger col-sm">
+          Dismiss all popups
+        </button>
+      </div>
+      <table class="table table-striped">
+        <tr>
+          <td>Apple</td>
+          <td>
+            <button
+              data-stock="AAPL"
+              class="open-popup-btn btn btn-primary float-right"
+            >
+              View chart
+            </button>
+          </td>
+        </tr>
+        <tr>
+          <td>Netflix</td>
+          <td>
+            <button
+              data-stock="NFLX"
+              class="open-popup-btn btn btn-primary float-right"
+            >
+              View chart
+            </button>
+          </td>
+        </tr>
+        <tr>
+          <td>Google</td>
+          <td>
+            <button
+              data-stock="GOOGL"
+              class="open-popup-btn btn btn-primary float-right"
+            >
+              View chart
+            </button>
+          </td>
+        </tr>
+        <tr>
+          <td>Tesla</td>
+          <td>
+            <button
+              data-stock="TSLA"
+              class="open-popup-btn btn btn-primary float-right"
+            >
+              View chart
+            </button>
+          </td>
+        </tr>
+      </table>
+    </div>
+    <script src="./container.js"></script>
+  </body>
+</html>
